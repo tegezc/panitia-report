@@ -19,7 +19,7 @@ Build mode: fast
   Learner check: Open `index.html` in Chrome, paste both excerpts, tap Baca pesan, and look at the amber `Rp.2000.0000` row, the panitia Hitung/Tertulis row, Kas sisa as Saldo awal, and Saldo akhir Rp 4.889.000.
   Commit: `Show the pasted messages and the lines that need her`
 
-- [ ] **2. She can settle a line, and the download stays blocked until the check is honest**
+- [x] **2. She can settle a line, and the download stays blocked until the check is honest**
   Becomes usable: She can tap Benar, Ubah, Pakai tertulis, Pakai hitungan, type an amount on a red row, mark Bukan transaksi, or pull a set-aside line back with Ini transaksi. She can change TOTAL tertulis, answer the one missing-total question, edit Saldo awal (including the replace rules), and edit the event name and date. The paste never changes. A rupiah gap stays pinned. Unduh PDF is on the page, grey, and says "Masih ada baris yang perlu dicek" until every pasted message matches and every yellow or red line is settled. Then the button is dark green. It still does not download a file.
   Why now: The kernel asks her to confirm instead of hiding the line. The gate has to be true before a PDF means anything. The demo path is Benar on the odd amount and Pakai tertulis on the multiplication.
   PRD ref: `prd.md > The Core Journey` (steps 4–5), `prd.md > Rows`, `prd.md > The four numbers`, `prd.md > The total at the top of a list`, `prd.md > Opening balance`
@@ -51,7 +51,7 @@ Build mode: fast
 
 ## Hands-on Checkpoints
 
-- [ ] Early usable behavior explored — after slice 1, the paste page and the kernel reading
+- [x] Early usable behavior explored — after slice 1, the paste page and the kernel reading
 - [ ] Final kick-the-tires exploration and feedback completed
 
 ## Final Review

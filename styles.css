@@ -41,12 +41,31 @@ textarea {
 }
 
 button {
-  margin-top: 0.9rem;
+  margin: 0.35rem 0.35rem 0 0;
   border: 1px solid #1c1c1c;
   background: #1c1c1c;
   color: #f6f1e7;
   font: inherit;
-  padding: 0.55rem 0.8rem;
+  padding: 0.45rem 0.7rem;
+}
+
+button.download {
+  display: block;
+  margin-top: 1rem;
+  background: #c8c8c8;
+  color: #4a4a4a;
+  border-color: #9a9a9a;
+}
+
+button.download.ready {
+  background: #1d6b3a;
+  color: #f6f1e7;
+  border-color: #1d6b3a;
+}
+
+.actions input {
+  width: auto;
+  margin: 0.35rem 0.35rem 0 0;
 }
 
 .note,

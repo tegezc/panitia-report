@@ -23,9 +23,9 @@
     <section id="report-view" hidden>
       <p id="gap" class="gap" hidden></p>
       <label for="event-name">Nama acara</label>
-      <input id="event-name" type="text" readonly>
+      <input id="event-name" type="text">
       <label for="event-date">Tanggal</label>
-      <input id="event-date" type="text" readonly>
+      <input id="event-date" type="text">
       <table class="figures">
         <tr><th>Saldo awal</th><td id="saldo-awal"></td></tr>
         <tr><th>Total donasi</th><td id="total-donasi"></td></tr>
@@ -34,6 +34,7 @@
       </table>
       <div id="income-list"></div>
       <div id="expense-list"></div>
+      <button id="download" class="download" type="button" disabled>Masih ada baris yang perlu dicek.</button>
     </section>
   </main>
   <script src="parse.js"></script>

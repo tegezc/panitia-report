@@ -188,11 +188,13 @@ function openingBalance(incomeRows) {
   return 0;
 }
 
-function reportFigures(income, expense) {
+function reportFigures(income, expense, typedSaldoAwal) {
   var incomeRows = income ? income.rows : [];
   var expenseRows = expense ? expense.rows : [];
   var incomeTotal = sumCounted(incomeRows);
-  var saldoAwal = income ? openingBalance(incomeRows) : 0;
+  var marked = income ? openingBalance(incomeRows) : 0;
+  var hasMarked = incomeRows.some(function (row) { return row.saldoAwal && row.amount !== null; });
+  var saldoAwal = hasMarked ? marked : (typedSaldoAwal == null ? 0 : typedSaldoAwal);
   var totalDonasi = incomeTotal - saldoAwal;
   var totalPengeluaran = sumCounted(expenseRows);
   return {
