@@ -29,7 +29,7 @@ Build mode: fast
   Learner check: Paste the excerpts, tap Benar on `Rp.2000.0000` and Pakai tertulis on the panitia line, and confirm the button turns dark green and still does not download.
   Commit: `Settle lines and gate the PDF button`
 
-- [ ] **3. The PDF downloads only when that gate is open**
+- [x] **3. The PDF downloads only when that gate is open**
   Becomes usable: The dark-green button downloads `laporan-kas.pdf`. Page one is the event name, the date, and the four numbers. When Saldo awal came from a line, that line's original wording sits with Saldo awal and the line is not repeated in the income list. Later pages list donations, then expenses, in paste order. She can add up to three role-and-name signatures, or add none, and the block is last only if she added one. A grey button downloads nothing. If the file cannot be built, the page says "PDF gagal dibuat" and the report on screen stays.
   Why now: pdf-lib is the one vendored dependency, and the download is the moment the check becomes a document. Signatures exist only to appear at the end of that file. The kernel reading and the gate already work, so a PDF bug cannot hide them.
   PRD ref: `prd.md > The Core Journey` (step 6), `prd.md > The PDF`, `prd.md > Signatures`

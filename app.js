@@ -24,6 +24,7 @@ function createReport(income, expense) {
     eventName: income && income.eventName ? income.eventName : "",
     eventDate: income && income.eventDate ? income.eventDate : "",
     typedSaldoAwal: null,
+    signatures: [],
     income: income,
     expense: expense
   };
@@ -312,6 +313,41 @@ function renderMessage(host, label, message, computed) {
   host.appendChild(list);
 }
 
+function renderSignatures(host, report) {
+  host.innerHTML = "";
+  var title = document.createElement("p");
+  title.textContent = "Tanda tangan";
+  host.appendChild(title);
+  for (var i = 0; i < report.signatures.length; i++) {
+    (function (index) {
+      var line = document.createElement("p");
+      line.textContent = report.signatures[index].role + " · " + report.signatures[index].name;
+      addButton(line, "Hapus", function () {
+        report.signatures.splice(index, 1);
+        drawReport();
+      });
+      host.appendChild(line);
+    })(i);
+  }
+  if (report.signatures.length >= 3) return;
+  addButton(host, "Tambah penandatangan", function () {
+    var role = document.createElement("input");
+    role.type = "text";
+    role.placeholder = "Jabatan";
+    var name = document.createElement("input");
+    name.type = "text";
+    name.placeholder = "Nama";
+    host.appendChild(role);
+    host.appendChild(name);
+    addButton(host, "Simpan", function () {
+      if (report.signatures.length >= 3) return;
+      if (!role.value.trim() || !name.value.trim()) return;
+      report.signatures.push({ role: role.value.trim(), name: name.value.trim() });
+      drawReport();
+    });
+  });
+}
+
 function drawReport() {
   var report = pageReport;
   document.getElementById("paste-view").hidden = true;
@@ -335,6 +371,7 @@ function drawReport() {
   var gap = document.getElementById("gap");
   gap.hidden = gaps.length === 0;
   gap.textContent = gaps.join(" · ");
+  renderSignatures(document.getElementById("signatures"), report);
   renderMessage(document.getElementById("income-list"), "Dana masuk", report.income, figures.incomeTotal);
   renderMessage(document.getElementById("expense-list"), "Dana keluar", report.expense, figures.totalPengeluaran);
 
@@ -394,5 +431,20 @@ if (typeof document !== "undefined") {
   document.getElementById("saldo-awal").addEventListener("click", editOpening);
   document.getElementById("download").addEventListener("click", function (event) {
     event.preventDefault();
+    var error = document.getElementById("pdf-error");
+    if (!pageReport || !gateOpen(pageReport)) return;
+    error.hidden = true;
+    buildPdfBytes(pageReport).then(function (bytes) {
+      var blob = new Blob([bytes], { type: "application/pdf" });
+      var link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "laporan-kas.pdf";
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    }).catch(function () {
+      error.hidden = false;
+      error.textContent = "PDF gagal dibuat.";
+    });
   });
 }

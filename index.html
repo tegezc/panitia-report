@@ -32,12 +32,16 @@
         <tr><th>Total pengeluaran</th><td id="total-pengeluaran"></td></tr>
         <tr><th>Saldo akhir</th><td id="saldo-akhir"></td></tr>
       </table>
+      <div id="signatures"></div>
       <div id="income-list"></div>
       <div id="expense-list"></div>
+      <p id="pdf-error" class="note" hidden></p>
       <button id="download" class="download" type="button" disabled>Masih ada baris yang perlu dicek.</button>
     </section>
   </main>
+  <script src="vendor/pdf-lib.min.js"></script>
   <script src="parse.js"></script>
+  <script src="pdf.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
