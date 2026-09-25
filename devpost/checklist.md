@@ -39,7 +39,7 @@ Build mode: fast
   Learner check: Settle the two yellow rows, tap Unduh PDF, and open the file. Page one should show the four numbers, and Kas sisa should not be listed again as a donation.
   Commit: `Download the laporan when the figures match`
 
-- [ ] **4. The same phone still has the report, and she can throw it away or re-read one message**
+- [x] **4. The same phone still has the report, and she can throw it away or re-read one message**
   Becomes usable: Leave and come back on this phone and the report is still there, including row decisions and signature names. Another empty storage does not have it. Laporan baru asks first and, after she confirms, returns to the two empty boxes. Reopening a paste and tapping Baca pesan asks first. Lanjut re-reads only that message. Batal keeps her work. If this browser will not keep storage for a local file, the page says "Laporan ini belum tersimpan di ponsel ini."
   Why now: The report she would actually leave and reopen is the one that already reads, settles, and downloads. Storage is the last journey step, and a storage failure must not be mistaken for a bad parse.
   PRD ref: `prd.md > The Core Journey` (steps 6–7), `prd.md > Reading a message again`, `prd.md > Coming back and Laporan baru`
@@ -73,4 +73,5 @@ Activity mode: not started
 ## Revisions
 
 - The income fixture and `spec.md > Components` now include `2. Warga B RT.02 : Rp 6.000.000` between the Rp 1.000.000 line and Kas sisa. The spec named the Rp 9.500.000 total without writing that clear donation line.
+- Laporan baru asks "Hapus laporan ini?" and clears only after Hapus. Batal keeps the report. Re-reading a changed paste asks "Pesan ini akan dibaca ulang. Koreksi pada pesan ini hilang."
 - The demo fixture is Independence Day. The income header is `*LAPORAN DANA MASUK—PERINGATAN HARI KEMERDEKAAN RI | Senin, 17 Agustus 2026*`, and the clear formula line is `Konsumsi warga 400x @Rp.11.000 = 4.400.000`. Amounts, parser rules, and the four numbers stay as they were.

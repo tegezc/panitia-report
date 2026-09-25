@@ -305,6 +305,25 @@ function renderMessage(host, label, message, computed) {
   }
   summary.textContent = rowCountLabel(label, message.rows.length);
   host.appendChild(summary);
+  addButton(host, "Lihat pesan", function () {
+    var existing = host.querySelector(".reopen");
+    if (existing) {
+      existing.remove();
+      return;
+    }
+    var box = document.createElement("div");
+    box.className = "reopen";
+    var area = document.createElement("textarea");
+    area.value = message.raw;
+    box.appendChild(area);
+    addButton(box, "Baca pesan", function () {
+      if (area.value === message.raw) return;
+      askConfirm("Pesan ini akan dibaca ulang. Koreksi pada pesan ini hilang.", function () {
+        rereadMessage(label === "Dana masuk" ? "income" : "expense", area.value);
+      });
+    });
+    host.appendChild(box);
+  });
   renderTotal(host, label, message, computed);
   var list = document.createElement("ul");
   list.className = "rows";
@@ -380,6 +399,7 @@ function drawReport() {
   download.disabled = !ready;
   download.textContent = ready ? "Unduh PDF" : "Masih ada baris yang perlu dicek.";
   download.className = ready ? "download ready" : "download";
+  saveReport();
 }
 
 function showPaste(message) {
@@ -405,6 +425,65 @@ function readPasted() {
   if (expense && expense.raw !== rawExpense) expense.raw = rawExpense;
 }
 
+var STORAGE_KEY = "panitia-report";
+var confirmAction = null;
+
+function saveReport() {
+  var note = document.getElementById("storage-note");
+  if (!pageReport) return;
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(pageReport));
+    if (note) note.hidden = true;
+  } catch (error) {
+    if (note) {
+      note.hidden = false;
+      note.textContent = "Laporan ini belum tersimpan di ponsel ini.";
+    }
+  }
+}
+
+function loadReport() {
+  try {
+    var raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    return JSON.parse(raw);
+  } catch (error) {
+    return null;
+  }
+}
+
+function askConfirm(message, onYes) {
+  confirmAction = onYes;
+  document.getElementById("confirm-text").textContent = message;
+  document.getElementById("confirm-yes").textContent = "Lanjut";
+  document.getElementById("confirm").hidden = false;
+}
+
+function rereadMessage(kind, text) {
+  var parsed = text.trim() ? parseMessage(text, kind) : null;
+  if (kind === "income") {
+    pageReport.income = parsed;
+    pageReport.eventName = parsed && parsed.eventName ? parsed.eventName : "";
+    pageReport.eventDate = parsed && parsed.eventDate ? parsed.eventDate : "";
+    pageReport.typedSaldoAwal = null;
+    document.getElementById("income-paste").value = text;
+  } else {
+    pageReport.expense = parsed;
+    document.getElementById("expense-paste").value = text;
+  }
+  drawReport();
+}
+
+function clearReport() {
+  pageReport = null;
+  try {
+    localStorage.removeItem(STORAGE_KEY);
+  } catch (error) {}
+  document.getElementById("income-paste").value = "";
+  document.getElementById("expense-paste").value = "";
+  showPaste("");
+}
+
 function editOpening() {
   var cell = document.getElementById("saldo-awal");
   var input = document.createElement("input");
@@ -423,11 +502,39 @@ function editOpening() {
 if (typeof document !== "undefined") {
   document.getElementById("read-button").addEventListener("click", readPasted);
   document.getElementById("event-name").addEventListener("input", function (event) {
-    if (pageReport) pageReport.eventName = event.target.value;
+    if (!pageReport) return;
+    pageReport.eventName = event.target.value;
+    saveReport();
   });
   document.getElementById("event-date").addEventListener("input", function (event) {
-    if (pageReport) pageReport.eventDate = event.target.value;
+    if (!pageReport) return;
+    pageReport.eventDate = event.target.value;
+    saveReport();
   });
+  document.getElementById("new-report").addEventListener("click", function () {
+    document.getElementById("confirm-yes").textContent = "Hapus";
+    confirmAction = clearReport;
+    document.getElementById("confirm-text").textContent = "Hapus laporan ini?";
+    document.getElementById("confirm").hidden = false;
+  });
+  document.getElementById("confirm-no").addEventListener("click", function () {
+    confirmAction = null;
+    document.getElementById("confirm").hidden = true;
+  });
+  document.getElementById("confirm-yes").addEventListener("click", function () {
+    var action = confirmAction;
+    confirmAction = null;
+    document.getElementById("confirm").hidden = true;
+    if (action) action();
+  });
+  var saved = loadReport();
+  if (saved && (saved.income || saved.expense)) {
+    pageReport = saved;
+    if (!pageReport.signatures) pageReport.signatures = [];
+    if (saved.income) document.getElementById("income-paste").value = saved.income.raw;
+    if (saved.expense) document.getElementById("expense-paste").value = saved.expense.raw;
+    drawReport();
+  }
   document.getElementById("saldo-awal").addEventListener("click", editOpening);
   document.getElementById("download").addEventListener("click", function (event) {
     event.preventDefault();

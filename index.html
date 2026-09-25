@@ -20,7 +20,14 @@
       <button id="read-button" type="button">Baca pesan</button>
     </section>
 
+    <section id="confirm" hidden>
+      <p id="confirm-text"></p>
+      <button id="confirm-yes" type="button">Lanjut</button>
+      <button id="confirm-no" type="button">Batal</button>
+    </section>
+
     <section id="report-view" hidden>
+      <p id="storage-note" class="note" hidden></p>
       <p id="gap" class="gap" hidden></p>
       <label for="event-name">Nama acara</label>
       <input id="event-name" type="text">
@@ -37,6 +44,7 @@
       <div id="expense-list"></div>
       <p id="pdf-error" class="note" hidden></p>
       <button id="download" class="download" type="button" disabled>Masih ada baris yang perlu dicek.</button>
+      <button id="new-report" type="button">Laporan baru</button>
     </section>
   </main>
   <script src="vendor/pdf-lib.min.js"></script>
