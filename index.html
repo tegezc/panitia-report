@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Panitia Report</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main>
+    <h1>Panitia Report</h1>
+    <p class="instruction">Tempel dua pesan WhatsApp yang sudah kamu kirim.</p>
+
+    <section id="paste-view">
+      <p id="paste-note" class="note"></p>
+      <label for="income-paste">Dana masuk</label>
+      <textarea id="income-paste" placeholder="Tempel pesan di sini"></textarea>
+      <label for="expense-paste">Dana keluar</label>
+      <textarea id="expense-paste" placeholder="Tempel pesan di sini"></textarea>
+      <button id="read-button" type="button">Baca pesan</button>
+    </section>
+
+    <section id="report-view" hidden>
+      <p id="gap" class="gap" hidden></p>
+      <label for="event-name">Nama acara</label>
+      <input id="event-name" type="text" readonly>
+      <label for="event-date">Tanggal</label>
+      <input id="event-date" type="text" readonly>
+      <table class="figures">
+        <tr><th>Saldo awal</th><td id="saldo-awal"></td></tr>
+        <tr><th>Total donasi</th><td id="total-donasi"></td></tr>
+        <tr><th>Total pengeluaran</th><td id="total-pengeluaran"></td></tr>
+        <tr><th>Saldo akhir</th><td id="saldo-akhir"></td></tr>
+      </table>
+      <div id="income-list"></div>
+      <div id="expense-list"></div>
+    </section>
+  </main>
+  <script src="parse.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

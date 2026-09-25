@@ -1,0 +1,14 @@
+--- dana masuk ---
+*LAPORAN DANA MASUK—MAULID NABI MUHAMMAD SAW 1448 H / 2026 M  |  Ahad, 30 Agustus 2026*
+1. Bpk. H. Warga A RT.01  : Rp 1.000.000
+2. Warga B RT.02 : Rp 6.000.000
+75. Kas sisa 2024 : Rp. 500.000
+102. Bpk H. Warga F : Rp.2000.0000
+TOTAL DANA MASUK : Rp. 9.500.000
+Rekening panitia 1234567890
+--- dana keluar ---
+DANA KELUAR
+Konsumsi Jamaah 400x @Rp.11.000 = 4.400.000
+Konsumsi panitia 10x @Rp.11.000 = 100.000
+print proposal dan undangan     Rp. 111.000
+TOTAL                         Rp. 4.611.000

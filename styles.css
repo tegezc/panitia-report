@@ -1,0 +1,116 @@
+body {
+  margin: 0 auto;
+  max-width: 28rem;
+  padding: 1.25rem 1rem 2rem;
+  background: #f6f1e7;
+  color: #1c1c1c;
+  font-family: system-ui, sans-serif;
+  line-height: 1.4;
+}
+
+h1 {
+  font-size: 1.5rem;
+  font-weight: 650;
+  margin: 0 0 0.35rem;
+}
+
+.instruction {
+  margin: 0 0 1rem;
+}
+
+label {
+  display: block;
+  margin: 0.8rem 0 0.25rem;
+  font-size: 0.95rem;
+}
+
+textarea,
+input[type="text"] {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #1c1c1c;
+  background: #fffdf8;
+  color: #1c1c1c;
+  font: inherit;
+  padding: 0.55rem 0.6rem;
+}
+
+textarea {
+  min-height: 7rem;
+  resize: vertical;
+}
+
+button {
+  margin-top: 0.9rem;
+  border: 1px solid #1c1c1c;
+  background: #1c1c1c;
+  color: #f6f1e7;
+  font: inherit;
+  padding: 0.55rem 0.8rem;
+}
+
+.note,
+.gap {
+  margin: 0 0 0.6rem;
+}
+
+.figures {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0.8rem 0 1rem;
+  font-size: 1.2rem;
+}
+
+.figures th,
+.figures td {
+  border: 1px solid #1c1c1c;
+  padding: 0.45rem 0.55rem;
+  text-align: left;
+}
+
+.figures td {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.summary,
+.written-total {
+  margin: 0.4rem 0;
+}
+
+.rows {
+  list-style: none;
+  margin: 0 0 1rem;
+  padding: 0;
+}
+
+.row {
+  border-top: 1px solid #cfc6b8;
+  padding: 0.45rem 0.35rem;
+}
+
+.raw,
+.reading {
+  margin: 0.15rem 0;
+}
+
+.raw {
+  white-space: pre-wrap;
+}
+
+.reading {
+  color: #3a3a3a;
+}
+
+.row-yellow {
+  background: #f3e2b8;
+}
+
+.row-red {
+  background: #f4d2d2;
+}
+
+.row-aside {
+  background: #e6e6e6;
+  color: #5c5c5c;
+}
