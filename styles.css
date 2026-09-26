@@ -92,9 +92,28 @@ button.download.ready {
   font-variant-numeric: tabular-nums;
 }
 
-.summary,
-.written-total {
-  margin: 0.4rem 0;
+.section-income {
+  background: #efe2c4;
+  padding: 0.7rem 0.75rem 0.9rem;
+  margin: 0.8rem 0;
+}
+
+.section-expense {
+  background: #d5e3dc;
+  padding: 0.7rem 0.75rem 0.9rem;
+  margin: 0.8rem 0;
+}
+
+.summary {
+  margin: 0.2rem 0 0.4rem;
+}
+
+.total-line {
+  margin: 0.45rem 0;
+  padding: 0.4rem 0.5rem;
+  background: #1c1c1c;
+  color: #f6f1e7;
+  font-weight: 700;
 }
 
 .rows {
@@ -122,7 +141,15 @@ button.download.ready {
 }
 
 .detail {
-  padding: 0.2rem 0.15rem 0.55rem;
+  margin: 0 0 0.45rem;
+  padding: 0.7rem 0.75rem;
+  background: #fffdf8;
+  border: 1px solid #1c1c1c;
+  color: #1c1c1c;
+}
+
+.reopen {
+  margin: 0.35rem 0 0.6rem;
 }
 
 .raw,
@@ -138,15 +165,15 @@ button.download.ready {
   color: #3a3a3a;
 }
 
-.row-yellow {
+.tile.row-yellow {
   background: #f3e2b8;
 }
 
-.row-red {
+.tile.row-red {
   background: #f4d2d2;
 }
 
-.row-aside {
+.tile.row-aside {
   background: #e6e6e6;
   color: #5c5c5c;
 }

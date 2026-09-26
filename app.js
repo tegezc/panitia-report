@@ -133,6 +133,7 @@ function markOpening(report, row) {
 
 var pageReport = null;
 var openTile = null;
+var reopenList = null;
 
 function readingText(row, kind) {
   if (row.status === "aside") return "Tidak dihitung";
@@ -229,12 +230,12 @@ function renderTile(row, kind, index) {
   var key = kind + ":" + index;
   var wrap = document.createElement("li");
   wrap.className = "tile-wrap";
-  if (row.status === "yellow-amount" || row.status === "yellow-multiply") wrap.className += " row-yellow";
-  if (row.status === "red") wrap.className += " row-red";
-  if (row.status === "aside") wrap.className += " row-aside";
   var tile = document.createElement("button");
   tile.type = "button";
   tile.className = "tile";
+  if (row.status === "yellow-amount" || row.status === "yellow-multiply") tile.className += " row-yellow";
+  if (row.status === "red") tile.className += " row-red";
+  if (row.status === "aside") tile.className += " row-aside";
   tile.textContent = tileTitle(row, kind);
   tile.addEventListener("click", function () {
     openTile = openTile === key ? null : key;
@@ -299,7 +300,7 @@ function showEdit(actions, row, kind) {
 
 function renderTotal(host, label, message, computed) {
   var total = document.createElement("p");
-  total.className = "written-total";
+  total.className = "written-total total-line";
   if (!message) {
     total.textContent = "TOTAL tertulis: " + formatRp(0);
     host.appendChild(total);
@@ -332,6 +333,7 @@ function renderTotal(host, label, message, computed) {
 
 function renderMessage(host, label, message, computed) {
   host.innerHTML = "";
+  host.className = label === "Dana masuk" ? "section-income" : "section-expense";
   var summary = document.createElement("p");
   summary.className = "summary";
   if (!message) {
@@ -342,12 +344,14 @@ function renderMessage(host, label, message, computed) {
   }
   summary.textContent = rowCountLabel(label, message.rows.length);
   host.appendChild(summary);
+  var reopenSlot = document.createElement("div");
+  reopenSlot.className = "reopen-slot";
   addButton(host, "Lihat pesan", function () {
-    var existing = host.querySelector(".reopen");
-    if (existing) {
-      existing.remove();
-      return;
-    }
+    reopenList = reopenList === label ? null : label;
+    drawReport();
+  });
+  host.appendChild(reopenSlot);
+  if (reopenList === label) {
     var box = document.createElement("div");
     box.className = "reopen";
     var area = document.createElement("textarea");
@@ -359,8 +363,8 @@ function renderMessage(host, label, message, computed) {
         rereadMessage(label === "Dana masuk" ? "income" : "expense", area.value);
       });
     });
-    host.appendChild(box);
-  });
+    reopenSlot.appendChild(box);
+  }
   renderTotal(host, label, message, computed);
   var list = document.createElement("ul");
   list.className = "rows";
@@ -387,7 +391,7 @@ function renderMessage(host, label, message, computed) {
     }
     for (var n = 0; n < groups.length; n++) {
       var head = document.createElement("li");
-      head.className = "group-head";
+      head.className = "group-head total-line";
       head.textContent = (groups[n].rt ? "RT " + groups[n].rt : "Tanpa RT") + "  " + formatRp(groupSubtotal(groups[n].entries));
       list.appendChild(head);
       for (var t = 0; t < groups[n].entries.length; t++) {
@@ -402,7 +406,15 @@ function renderMessage(host, label, message, computed) {
       for (var a = 0; a < aside.length; a++) list.appendChild(renderTile(aside[a].row, kind, aside[a].index));
     }
   } else {
-    for (var e = 0; e < message.rows.length; e++) list.appendChild(renderTile(message.rows[e], kind, e));
+    var expenseEntries = [];
+    for (var e = 0; e < message.rows.length; e++) {
+      expenseEntries.push({ row: message.rows[e], index: e });
+      list.appendChild(renderTile(message.rows[e], kind, e));
+    }
+    var expenseTotal = document.createElement("li");
+    expenseTotal.className = "total-line";
+    expenseTotal.textContent = "Total  " + formatRp(groupSubtotal(expenseEntries));
+    list.appendChild(expenseTotal);
   }
   host.appendChild(list);
 }

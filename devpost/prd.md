@@ -37,7 +37,9 @@ The page should feel like the paper laporan kas a print shop will photocopy. Not
 
 Off-white paper, near-black ink, thin ruled lines. The phone uses the device font. No custom font, no gradient, no illustration.
 
-A clear line has no fill. A yellow line is a pale amber row. A red line is a pale red row. A set-aside line is grey. The four numbers sit in a plain bordered table, large enough to read in sunlight.
+A clear tile has no fill. A yellow tile is pale amber. A red tile is pale red. A set-aside tile is grey. That color stays on the one-line tile. The open detail is a separate panel directly under that tile, with its own background, a border, and padding, so the original WhatsApp line and the reading are not another row. The fix buttons sit in that panel.
+
+Dana masuk has one background. Dana keluar has a different background. "TOTAL tertulis", each RT subtotal, and the expense total are heavier than a donor tile, so a total is not read as another name. The four numbers stay in a plain bordered table, large enough to read in sunlight.
 
 **Unduh PDF** is a solid dark-green button when it works, and the same button greyed out while it shows "Masih ada baris yang perlu dicek."
 

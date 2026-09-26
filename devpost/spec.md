@@ -57,7 +57,7 @@ The full private broadcasts stay out of the repo. These excerpts are the corpus.
 
 Carried from `prd.md > Look and Feel` and `scope.md > Inspiration & Identity`.
 
-Off-white page, near-black text, thin ruled lines. The device font. No custom font file, no gradient, no illustration. A clear row has no fill. A yellow row is pale amber. A red row is pale red. A set-aside row is grey. The four numbers sit in one bordered table, large enough to read in sunlight. **Unduh PDF** is solid dark green when it works, and the same button greyed out while it shows "Masih ada baris yang perlu dicek."
+Off-white page, near-black text, thin ruled lines. The device font. No custom font file, no gradient, no illustration. A clear tile has no fill. A yellow tile is pale amber. A red tile is pale red. A set-aside tile is grey. That color stays on the one-line tile. The open detail is a separate panel under the tile, with its own background, a border, and padding. Dana masuk and Dana keluar use different block backgrounds. "TOTAL tertulis", each RT subtotal, and the expense total are heavier than a donor tile. The four numbers sit in one bordered table, large enough to read in sunlight. **Unduh PDF** is solid dark green when it works, and the same button greyed out while it shows "Masih ada baris yang perlu dicek."
 
 The PDF is black text on white, in three parts: Dana masuk by RT, Dana keluar, then the ringkasan. It is not a one-page list titled Panitia Report. CSS does the screen. pdf-lib draws the file. The stack can honor this direction without a design system.
 

@@ -74,6 +74,7 @@ Activity mode: not started
 ## Revisions
 
 - The income fixture and `spec.md > Components` now include `2. Warga B RT.02 : Rp 6.000.000` between the Rp 1.000.000 line and Kas sisa. The spec named the Rp 9.500.000 total without writing that clear donation line.
+- Open detail is a bordered panel under the tile, not painted with the tile color. "Lihat pesan" opens directly under its button. Dana masuk and Dana keluar have different backgrounds, and totals are heavier than a donor tile.
 - The screen lists income by RT as closed tiles, and the PDF is Dana masuk, Dana keluar, and a ringkasan without donor names. Per-RT moved from Later into the POC boundary. `parse.js` stays. The kernel stays: the odd amount stays yellow until Benar, the multiplication check stays, Kas sisa stays Saldo awal, and Unduh PDF stays grey until every yellow or red line is settled.
 - Laporan baru asks "Hapus laporan ini?" and clears only after Hapus. Batal keeps the report. Re-reading a changed paste asks "Pesan ini akan dibaca ulang. Koreksi pada pesan ini hilang."
 - The demo fixture is Independence Day. The income header is `*LAPORAN DANA MASUK—PERINGATAN HARI KEMERDEKAAN RI | Senin, 17 Agustus 2026*`, and the clear formula line is `Konsumsi warga 400x @Rp.11.000 = 4.400.000`. Amounts, parser rules, and the four numbers stay as they were.
