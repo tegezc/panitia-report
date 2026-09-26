@@ -67,7 +67,7 @@ Copy she sees is the Indonesian already named in the PRD. Two sentences and the 
 
 ### The page
 
-`index.html` plus `app.js`. One stacked phone page. It is never two columns. Before a reading: title "Panitia Report", the line "Tempel dua pesan WhatsApp yang sudah kamu kirim.", the two boxes, **Baca pesan**. After a reading: title, two collapsed lines, editable event name and date, the gap line if any, the four-number table, "Tanda tangan", income grouped by RT into closed tiles, expenses as closed tiles, **Unduh PDF**, **Laporan baru**. A closed tile is one line, name and amount, with no buttons. Tap opens that tile's detail only. A real income message is 100–200 rows. Expenses stay under 30.
+`index.html` plus `app.js`. One stacked phone page. It is never two columns. Before a reading: title "Panitia Report", the line "Tempel dua pesan WhatsApp yang sudah kamu kirim.", the two boxes, **Baca pesan**. After a reading: title, two collapsed lines, editable event name and date, the gap line if any, the four-number table, **Laporan baru** directly under that table, "Tanda tangan", income grouped by RT into closed tiles, expenses as closed tiles, **Unduh PDF**, **Laporan baru**. A closed tile is one line, name and amount, with no buttons. Tap opens that tile's detail only. A real income message is 100–200 rows. Expenses stay under 30.
 
 There is no second screen.
 

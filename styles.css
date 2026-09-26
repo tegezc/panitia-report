@@ -49,6 +49,11 @@ button {
   padding: 0.45rem 0.7rem;
 }
 
+#new-report {
+  display: block;
+  margin: 0.2rem 0 0.8rem;
+}
+
 button.download {
   display: block;
   margin-top: 1rem;

@@ -25,7 +25,7 @@ One phone page, stacked. It is never two columns.
 
 **Before a reading.** Title, the one instruction line, the two paste boxes, **Baca pesan**. Nothing else.
 
-**After a reading.** Title, then the two collapsed message lines. Under those, the editable event name and date. Then the four numbers in one bordered table. If a rupiah gap remains, a line pinned at the top names the message and the difference. Under the four numbers, "Tanda tangan", empty until she adds someone. Income is grouped by RT, each group with its name and subtotal, then one closed tile per donor. Expenses are closed tiles. A real income message is 100–200 rows, and expenses stay under 30, so a closed tile is one line and the fix actions appear only under the tile she tapped. **Unduh PDF** is on the page. **Laporan baru** is on the page once a report is open.
+**After a reading.** Title, then the two collapsed message lines. Under those, the editable event name and date. Then the four numbers in one bordered table. If a rupiah gap remains, a line pinned at the top names the message and the difference. Directly under the four numbers, **Laporan baru**, so a long income list does not push it off the screen. Under that, "Tanda tangan", empty until she adds someone. Income is grouped by RT, each group with its name and subtotal, then one closed tile per donor. Expenses are closed tiles. A real income message is 100–200 rows, and expenses stay under 30, so a closed tile is one line and the fix actions appear only under the tile she tapped. **Unduh PDF** is on the page. **Laporan baru** is on the page once a report is open.
 
 She reopens a collapsed line to see the paste again. Row edits never change that paste.
 
