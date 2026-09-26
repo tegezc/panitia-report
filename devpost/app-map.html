@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Panitia Report — app map</title>
+  <style>
+    :root { color-scheme: light; }
+    body { margin: 0; font: 16px/1.45 Georgia, "Times New Roman", serif; color: #1c1c1c; background: #f7f4ee; }
+    main { max-width: 40rem; margin: 0 auto; padding: 1.5rem 1.25rem 3rem; }
+    h1 { font-size: 1.6rem; line-height: 1.2; margin: 0 0 0.4rem; }
+    h2 { font-size: 1.15rem; margin: 1.6rem 0 0.4rem; }
+    p, li { margin: 0.4rem 0; }
+    a { color: #243e5a; }
+    a:focus { outline: 2px solid #243e5a; outline-offset: 2px; }
+    code { font-family: Consolas, "Courier New", monospace; font-size: 0.92em; }
+    .note { color: #3d3d3d; }
+    svg { width: 100%; height: auto; display: block; margin: 0.8rem 0 0.4rem; background: #fff; border: 1px solid #cfc6b8; }
+    ol { padding-left: 1.2rem; }
+    details { margin: 0.6rem 0; background: #fff; border: 1px solid #cfc6b8; padding: 0.4rem 0.8rem; }
+    summary { cursor: pointer; font-weight: bold; }
+    summary:focus { outline: 2px solid #243e5a; outline-offset: 2px; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Panitia Report</h1>
+    <p>A phone page for a neighborhood treasurer. She pastes two WhatsApp messages, checks the lines that do not read cleanly, and downloads a three-part PDF only when the written totals match and every yellow or red row is settled.</p>
+    <p class="note">The pieces are <code>index.html</code> (the page), <code>parse.js</code> (the reading), <code>app.js</code> (the report and the gate), and <code>pdf.js</code> (the file). The report stays in this browser under <code>panitia-report</code>. Nothing is sent to a server.</p>
+
+    <h2>One action</h2>
+    <p>Download PDF stays grey, with a sentence under it, until the check is honest. This route is a reference. It was not walked in the editor.</p>
+    <svg viewBox="0 0 640 220" role="img" aria-labelledby="diagram-title diagram-desc">
+      <title id="diagram-title">Download stays blocked until rows and totals are settled</title>
+      <desc id="diagram-desc">Kas sisa is marked in parse.js. app.js counts it in the income match and skips it as a row to check. gateOpen leaves Download PDF grey until yellow and red rows are settled and both written totals match. The sentence appears under the button in index.html.</desc>
+      <rect x="16" y="24" width="170" height="72" fill="#efe2c4" stroke="#1c1c1c"/>
+      <text x="101" y="52" text-anchor="middle" font-family="Georgia, serif" font-size="15">Kas sisa line</text>
+      <text x="101" y="74" text-anchor="middle" font-family="Consolas, monospace" font-size="12">parse.js</text>
+      <rect x="230" y="24" width="180" height="72" fill="#d5e3dc" stroke="#1c1c1c"/>
+      <text x="320" y="48" text-anchor="middle" font-family="Georgia, serif" font-size="15">Count it, don't list it</text>
+      <text x="320" y="70" text-anchor="middle" font-family="Consolas, monospace" font-size="12">incomeMatch</text>
+      <rect x="454" y="24" width="170" height="72" fill="#e7e7e7" stroke="#1c1c1c"/>
+      <text x="539" y="48" text-anchor="middle" font-family="Georgia, serif" font-size="15">Download PDF</text>
+      <text x="539" y="70" text-anchor="middle" font-family="Consolas, monospace" font-size="12">index.html</text>
+      <line x1="186" y1="60" x2="230" y2="60" stroke="#1c1c1c" stroke-width="2"/>
+      <polygon points="230,60 220,55 220,65" fill="#1c1c1c"/>
+      <line x1="410" y1="60" x2="454" y2="60" stroke="#1c1c1c" stroke-width="2"/>
+      <polygon points="454,60 444,55 444,65" fill="#1c1c1c"/>
+      <rect x="150" y="130" width="340" height="64" fill="#243e5a" stroke="#1c1c1c"/>
+      <text x="320" y="156" text-anchor="middle" fill="#ffffff" font-family="Georgia, serif" font-size="15">Rows still need a check: Bpk H. Warga F</text>
+      <text x="320" y="176" text-anchor="middle" fill="#ffffff" font-family="Consolas, monospace" font-size="12">blockNote in app.js</text>
+      <line x1="539" y1="96" x2="539" y2="118" stroke="#1c1c1c" stroke-width="2"/>
+      <line x1="539" y1="118" x2="320" y2="118" stroke="#1c1c1c" stroke-width="2"/>
+      <line x1="320" y1="118" x2="320" y2="130" stroke="#1c1c1c" stroke-width="2"/>
+      <polygon points="320,130 315,120 325,120" fill="#1c1c1c"/>
+    </svg>
+
+    <h2>Reference route</h2>
+    <ol>
+      <li>
+        <a href="../index.html"><code>index.html</code></a> — search <code>id="download"</code> and <code>id="download-note"</code>.
+        The button is always labeled Download PDF. The note under it is the sentence she reads while the button is grey.
+      </li>
+      <li>
+        <a href="../app.js"><code>app.js</code></a> — search <code>function gateOpen</code>, <code>function blockNote</code>, and <code>function incomeMatch</code>.
+        <code>incomeMatch</code> adds Opening balance to the donations before comparing them with Written total. <code>rowNeedsCheck</code> skips a Kas sisa row, so that hidden line does not keep the button grey. <code>blockNote</code> names a yellow or red row, or names which total is short.
+      </li>
+      <li>
+        <a href="../parse.js"><code>parse.js</code></a> — search <code>kas sisa</code> and <code>function reportFigures</code>.
+        A description matching Kas sisa sets <code>saldoAwal</code> on that income row. <code>reportFigures</code> subtracts it from donations. Closing balance is computed there and is never copied from a message.
+      </li>
+    </ol>
+
+    <h2>To change this, start here</h2>
+    <ul>
+      <li>Button or note wording: <code>index.html</code>, <code>id="download"</code> and <code>id="download-note"</code>. The same words are set again in <code>app.js</code> inside <code>blockNote</code> and <code>drawReport</code>.</li>
+      <li>What keeps Download PDF grey: <code>app.js</code>, <code>function gateOpen</code>.</li>
+      <li>How Kas sisa is recognized: <code>parse.js</code>, the <code>kas sisa</code> test. Leave that behavior in place unless a later plan says otherwise.</li>
+      <li>PDF columns: <code>pdf.js</code>, <code>function buildPdfBytes</code>, the three <code>beginTable</code> calls. Titles are separate from No., Nama, Jumlah, Uraian, and Keterangan.</li>
+    </ul>
+
+    <h2>A practice to reuse</h2>
+    <p>The written Money in total looked Rp 500.000 short because Kas sisa was Opening balance and was not in the donations on screen. After <code>incomeMatch</code> counted it, that gap disappeared, and Download PDF stayed grey because Bpk H. Warga F was still a yellow amount. <code>prd.md</code>, section “The four numbers”, already said which sentence belongs to a yellow or red row and which sentence names a short total.</p>
+    <p>Name the sentence and the number you expect to see. A grey control is then either a row still open or a total that is short, and the sentence tells you which. The same check works on the next project: write the observable result in the requirements, then read that result before treating a stuck control as a new bug.</p>
+
+    <h2>Run it again</h2>
+    <p>Open <a href="../index.html"><code>index.html</code></a> in Chrome. Paste the two messages in <a href="../fixtures/excerpts.txt"><code>fixtures/excerpts.txt</code></a> into Money in and Money out, then tap Read messages. No install and no server. See <a href="../README.md"><code>README.md</code></a>.</p>
+    <p class="note">This map describes commit <code>ec79e0b</code>. It is a snapshot of the code at that commit and can drift if the files change later.</p>
+
+    <details>
+      <summary>What this map is not</summary>
+      <p>It is not a page in the treasurer’s app, and it is not the build checklist. The pasted WhatsApp lines stay in the fixture. This file does not copy them.</p>
+    </details>
+  </main>
+</body>
+</html>

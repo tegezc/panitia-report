@@ -61,15 +61,15 @@ Build mode: fast
 
 ## Code Tour and App Map
 
-- [ ] Learning activity complete — guided route, focused alternative, prior practice connected, or brief recap
-- [ ] Optional edit and transfer reflection addressed — offered/declined/already covered/not applicable as appropriate
-- [ ] `devpost/app-map.html` generated from finished code, checked, and shown, including a project-grounded practice to reuse
+- [x] Learning activity complete — guided route, focused alternative, prior practice connected, or brief recap
+- [x] Optional edit and transfer reflection addressed — offered/declined/already covered/not applicable as appropriate
+- [x] `devpost/app-map.html` generated from finished code, checked, and shown, including a project-grounded practice to reuse
 
-Activity and evidence: not started
-Route and stops: not started
-Edit outcome: not started
-Reflection: not started
-Activity mode: not started
+Activity and evidence: Brief recap, not a hands-on tour. The download stayed grey after the Rp 500.000 gap disappeared, because Bpk H. Warga F was still yellow-amount. `prd.md > The four numbers` reserves "Rows still need a check." for a yellow or red row. `app.js` `incomeMatch` counts Kas sisa, and `blockNote` names the open row.
+Route and stops: Reference route only, not walked in the editor. `index.html` `id="download"` and `id="download-note"` → `app.js` `gateOpen`, `blockNote`, `incomeMatch` → `parse.js` `kas sisa` and `reportFigures`.
+Edit outcome: not applicable. No product change after the ready-to-ship confirmation.
+Reflection: declined.
+Activity mode: brief recap for a plan-first learner
 
 ## Revisions
 
