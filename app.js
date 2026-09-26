@@ -52,19 +52,19 @@ function messageReady(message, computed) {
   return message.total.amount === computed;
 }
 
-function openingAlreadyCounted(income) {
-  if (!income) return false;
+function countedDonations(income) {
+  if (!income) return 0;
+  var sum = 0;
   for (var i = 0; i < income.rows.length; i++) {
     var row = income.rows[i];
-    if (row.saldoAwal && row.amount !== null && row.status !== "aside" && row.status !== "red") return true;
+    if (row.saldoAwal) continue;
+    if (row.amount !== null && row.status !== "aside" && row.status !== "red") sum += row.amount;
   }
-  return false;
+  return sum;
 }
 
 function incomeMatch(report, figures) {
-  var match = figures.incomeTotal;
-  if (!openingAlreadyCounted(report.income)) match += figures.saldoAwal;
-  return match;
+  return countedDonations(report.income) + figures.saldoAwal;
 }
 
 function totalIssue(message, label, computed) {
