@@ -132,6 +132,7 @@ function markOpening(report, row) {
 }
 
 var pageReport = null;
+var openTile = null;
 
 function readingText(row, kind) {
   if (row.status === "aside") return "Tidak dihitung";
@@ -175,12 +176,19 @@ function amountField(parent, onCommit) {
   parent.appendChild(save);
 }
 
-function renderRow(row, kind) {
-  var item = document.createElement("li");
-  item.className = "row";
-  if (row.status === "yellow-amount" || row.status === "yellow-multiply") item.className += " row-yellow";
-  if (row.status === "red") item.className += " row-red";
-  if (row.status === "aside") item.className += " row-aside";
+function tileTitle(row, kind) {
+  if (row.status === "aside") {
+    var raw = row.raw.replace(/\s+/g, " ");
+    return raw.length > 48 ? raw.slice(0, 48) + "…" : raw;
+  }
+  var amount = row.amount === null ? "Belum ada jumlah" : formatRp(row.amount);
+  var name = kind === "income" ? (row.name || "Tanpa nama") : (row.item || "Tanpa item");
+  return name + "  " + amount;
+}
+
+function renderDetail(row, kind) {
+  var item = document.createElement("div");
+  item.className = "detail";
   var original = document.createElement("p");
   original.className = "raw";
   original.textContent = row.raw;
@@ -215,6 +223,35 @@ function renderRow(row, kind) {
 
   if (actions.childNodes.length) item.appendChild(actions);
   return item;
+}
+
+function renderTile(row, kind, index) {
+  var key = kind + ":" + index;
+  var wrap = document.createElement("li");
+  wrap.className = "tile-wrap";
+  if (row.status === "yellow-amount" || row.status === "yellow-multiply") wrap.className += " row-yellow";
+  if (row.status === "red") wrap.className += " row-red";
+  if (row.status === "aside") wrap.className += " row-aside";
+  var tile = document.createElement("button");
+  tile.type = "button";
+  tile.className = "tile";
+  tile.textContent = tileTitle(row, kind);
+  tile.addEventListener("click", function () {
+    openTile = openTile === key ? null : key;
+    drawReport();
+  });
+  wrap.appendChild(tile);
+  if (openTile === key) wrap.appendChild(renderDetail(row, kind));
+  return wrap;
+}
+
+function groupSubtotal(entries) {
+  var sum = 0;
+  for (var i = 0; i < entries.length; i++) {
+    var row = entries[i].row;
+    if (row.amount !== null && row.status !== "aside" && row.status !== "red") sum += row.amount;
+  }
+  return sum;
 }
 
 function showEdit(actions, row, kind) {
@@ -328,7 +365,45 @@ function renderMessage(host, label, message, computed) {
   var list = document.createElement("ul");
   list.className = "rows";
   var kind = label === "Dana masuk" ? "income" : "expense";
-  for (var i = 0; i < message.rows.length; i++) list.appendChild(renderRow(message.rows[i], kind));
+  if (kind === "income") {
+    var groups = [];
+    var aside = [];
+    for (var i = 0; i < message.rows.length; i++) {
+      var row = message.rows[i];
+      if (row.saldoAwal) continue;
+      if (row.status === "aside") {
+        aside.push({ row: row, index: i });
+        continue;
+      }
+      var found = null;
+      for (var g = 0; g < groups.length; g++) {
+        if (groups[g].rt === row.rt) found = groups[g];
+      }
+      if (!found) {
+        found = { rt: row.rt, entries: [] };
+        groups.push(found);
+      }
+      found.entries.push({ row: row, index: i });
+    }
+    for (var n = 0; n < groups.length; n++) {
+      var head = document.createElement("li");
+      head.className = "group-head";
+      head.textContent = (groups[n].rt ? "RT " + groups[n].rt : "Tanpa RT") + "  " + formatRp(groupSubtotal(groups[n].entries));
+      list.appendChild(head);
+      for (var t = 0; t < groups[n].entries.length; t++) {
+        list.appendChild(renderTile(groups[n].entries[t].row, kind, groups[n].entries[t].index));
+      }
+    }
+    if (aside.length) {
+      var asideHead = document.createElement("li");
+      asideHead.className = "group-head";
+      asideHead.textContent = "Tidak dihitung";
+      list.appendChild(asideHead);
+      for (var a = 0; a < aside.length; a++) list.appendChild(renderTile(aside[a].row, kind, aside[a].index));
+    }
+  } else {
+    for (var e = 0; e < message.rows.length; e++) list.appendChild(renderTile(message.rows[e], kind, e));
+  }
   host.appendChild(list);
 }
 

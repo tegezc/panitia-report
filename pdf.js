@@ -2,25 +2,35 @@ function countedRows(rows) {
   var kept = [];
   for (var i = 0; i < rows.length; i++) {
     var row = rows[i];
+    if (row.saldoAwal) continue;
     if (row.amount === null || row.status === "aside" || row.status === "red") continue;
     kept.push(row);
   }
   return kept;
 }
 
-function lineLabel(row, kind) {
-  if (kind === "income") {
-    return row.name + (row.rt ? " RT " + row.rt : "");
+function incomeGroups(rows) {
+  var groups = [];
+  var donors = countedRows(rows);
+  for (var i = 0; i < donors.length; i++) {
+    var found = null;
+    for (var g = 0; g < groups.length; g++) {
+      if (groups[g].rt === donors[i].rt) found = groups[g];
+    }
+    if (!found) {
+      found = { rt: donors[i].rt, rows: [] };
+      groups.push(found);
+    }
+    found.rows.push(donors[i]);
   }
-  return row.item + (row.group ? " · " + row.group : "");
+  return groups;
 }
 
 function buildPdfBytes(report) {
-  var docPromise = PDFLib.PDFDocument.create();
-  return docPromise.then(function (doc) {
+  return PDFLib.PDFDocument.create().then(function (doc) {
     return doc.embedFont(PDFLib.StandardFonts.Helvetica).then(function (font) {
-      var page = doc.addPage([595, 842]);
-      var y = 790;
+      var page = null;
+      var y = 800;
       var figures = reportFigures(report.income, report.expense, report.typedSaldoAwal);
       var openingRow = null;
       if (report.income) {
@@ -31,7 +41,7 @@ function buildPdfBytes(report) {
 
       function newPage() {
         page = doc.addPage([595, 842]);
-        y = 790;
+        y = 800;
       }
 
       function ensure(height) {
@@ -48,85 +58,86 @@ function buildPdfBytes(report) {
         });
       }
 
-      function center(value, size) {
-        var width = font.widthOfTextAtSize(String(value), size);
-        text(value, (595 - width) / 2, size);
-      }
-
-      center("Panitia Report", 18);
-      y -= 28;
-      center(report.eventName || "", 12);
-      y -= 18;
-      center(report.eventDate || "", 12);
-      y -= 28;
-
-      var rows = [
-        ["Saldo awal", formatRp(figures.saldoAwal)],
-        ["Total donasi", formatRp(figures.totalDonasi)],
-        ["Total pengeluaran", formatRp(figures.totalPengeluaran)],
-        ["Saldo akhir", formatRp(figures.saldoAkhir)]
-      ];
-      ensure(140);
-      var tableTop = y + 16;
-      for (var r = 0; r < rows.length; r++) {
-        text(rows[r][0], 70, 12);
-        text(rows[r][1], 320, 12);
-        y -= 22;
-      }
-      page.drawRectangle({
-        x: 60,
-        y: y + 8,
-        width: 475,
-        height: tableTop - (y + 8),
-        borderColor: PDFLib.rgb(0, 0, 0),
-        borderWidth: 1
-      });
-      if (openingRow) {
-        y -= 8;
-        ensure(40);
-        text(openingRow.raw, 70, 10);
+      function line(value, x, size) {
+        ensure(36);
+        text(value, x, size);
         y -= 16;
       }
 
-      function section(title, lines) {
-        y -= 20;
-        ensure(40);
-        text(title, 50, 13);
-        y -= 18;
-        for (var n = 0; n < lines.length; n++) {
-          ensure(36);
-          text(lines[n], 50, 11);
-          y -= 16;
-        }
+      function heading(value) {
+        newPage();
+        text(value, 50, 16);
+        y -= 26;
       }
 
-      var donations = [];
-      if (report.income) {
-        var incomeRows = countedRows(report.income.rows);
-        for (var d = 0; d < incomeRows.length; d++) {
-          if (incomeRows[d].saldoAwal) continue;
-          donations.push(lineLabel(incomeRows[d], "income") + "  " + formatRp(incomeRows[d].amount));
+      heading("Dana masuk");
+      line(report.eventName || "", 50, 12);
+      line(report.eventDate || "", 50, 12);
+      y -= 6;
+      text("No.", 50, 11);
+      text("Nama", 90, 11);
+      text("Jumlah", 430, 11);
+      y -= 18;
+
+      var groups = report.income ? incomeGroups(report.income.rows) : [];
+      for (var g = 0; g < groups.length; g++) {
+        var label = groups[g].rt ? "RT " + groups[g].rt : "Tanpa RT";
+        var subtotal = 0;
+        line(label, 50, 12);
+        for (var r = 0; r < groups[g].rows.length; r++) {
+          var donor = groups[g].rows[r];
+          subtotal += donor.amount;
+          ensure(36);
+          text(String(r + 1), 50, 11);
+          text(donor.name, 90, 11);
+          text(formatRp(donor.amount), 430, 11);
+          y -= 16;
         }
+        line("Subtotal  " + formatRp(subtotal), 90, 11);
+        y -= 6;
       }
-      var expenses = [];
-      if (report.expense) {
-        var expenseRows = countedRows(report.expense.rows);
-        for (var e = 0; e < expenseRows.length; e++) {
-          expenses.push(lineLabel(expenseRows[e], "expense") + "  " + formatRp(expenseRows[e].amount));
-        }
+
+      heading("Dana keluar");
+      var expenses = report.expense ? countedRows(report.expense.rows) : [];
+      var expenseTotal = 0;
+      for (var e = 0; e < expenses.length; e++) {
+        expenseTotal += expenses[e].amount;
+        ensure(36);
+        text(String(e + 1), 50, 11);
+        text(expenses[e].item, 90, 11);
+        text(formatRp(expenses[e].amount), 430, 11);
+        y -= 16;
       }
-      section("Donasi", donations);
-      section("Pengeluaran", expenses);
+      line("Total  " + formatRp(expenseTotal), 90, 12);
+
+      heading("Ringkasan");
+      for (var s = 0; s < groups.length; s++) {
+        var sum = 0;
+        for (var n = 0; n < groups[s].rows.length; n++) sum += groups[s].rows[n].amount;
+        var rtLabel = groups[s].rt ? "RT " + groups[s].rt : "Tanpa RT";
+        ensure(36);
+        text(rtLabel, 50, 11);
+        text(formatRp(sum), 430, 11);
+        y -= 16;
+      }
+      y -= 6;
+      line("Saldo awal  " + formatRp(figures.saldoAwal), 50, 12);
+      if (openingRow) line(openingRow.raw, 50, 10);
+      y -= 6;
+      for (var x = 0; x < expenses.length; x++) {
+        ensure(36);
+        text(expenses[x].item, 50, 11);
+        text(formatRp(expenses[x].amount), 430, 11);
+        y -= 16;
+      }
+      y -= 6;
+      line("Saldo akhir  " + formatRp(figures.saldoAkhir), 50, 12);
 
       if (report.signatures && report.signatures.length) {
-        y -= 28;
-        ensure(40);
-        text("Tanda tangan", 50, 13);
-        y -= 18;
-        for (var s = 0; s < report.signatures.length; s++) {
-          ensure(36);
-          text(report.signatures[s].role + "  " + report.signatures[s].name, 50, 11);
-          y -= 16;
+        y -= 12;
+        line("Tanda tangan", 50, 12);
+        for (var k = 0; k < report.signatures.length; k++) {
+          line(report.signatures[k].role + "  " + report.signatures[k].name, 50, 11);
         }
       }
 

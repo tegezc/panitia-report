@@ -103,9 +103,26 @@ button.download.ready {
   padding: 0;
 }
 
-.row {
+.group-head {
+  margin: 0.7rem 0 0.15rem;
+  font-weight: 650;
+}
+
+.tile {
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 0.4rem 0.15rem;
+  border: 0;
   border-top: 1px solid #cfc6b8;
-  padding: 0.45rem 0.35rem;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+}
+
+.detail {
+  padding: 0.2rem 0.15rem 0.55rem;
 }
 
 .raw,

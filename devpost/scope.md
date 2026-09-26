@@ -35,17 +35,17 @@ What excites the learner is the moment the money is wrong in a way a normal app 
 
 ## What "Working" Looks Like
 
-In the first minute, a judge sees the `Rp.2000.0000` line stopped and asked, an expense multiplication checked, and a closing balance that appears in neither message. She can correct a line or the total she wrote. The PDF downloads only when the numbers match, and page one shows opening balance, donations, expenses, and closing balance.
+In the first minute, a judge sees the `Rp.2000.0000` line stopped and asked, an expense multiplication checked, and a closing balance that appears in neither message. She can correct a line or the total she wrote. The PDF downloads only when the numbers match. Dana masuk is grouped by RT. The ringkasan has one line per RT, then Saldo awal, the expenses, and Saldo akhir. Donor names are not on that page.
 
 ## The POC Boundary
 
-One phone page. Two pastes, as written. Line-by-line reading with the original text kept beside it. Ambiguous lines confirmed, unreadable lines left uncounted until she types an amount or marks them as not a transaction. Header, footer, and bank-account line shown but not counted until she says otherwise. Edits to a line — amount, name, RT, and expense group — plus the total she wrote, and the event name and date. Opening balance lifted from a leftover-cash line such as "Kas sisa 2024", or zero if that line is absent. Donations equal the income total minus that opening balance. Closing balance computed, never copied from a message. Download blocked while a gap remains. A missing total line asks once. One PDF. Page one stays the four numbers: opening balance, donations, expenses, closing balance. An optional signature block at the end.
+One phone page. Two pastes, as written. Line-by-line reading with the original text kept beside it. Ambiguous lines confirmed, unreadable lines left uncounted until she types an amount or marks them as not a transaction. Header, footer, and bank-account line shown but not counted until she says otherwise. Edits to a line — amount, name, RT, and expense group — plus the total she wrote, and the event name and date. Opening balance lifted from a leftover-cash line such as "Kas sisa 2024", or zero if that line is absent. Donations equal the income total minus that opening balance. Closing balance computed, never copied from a message. Download blocked while a gap remains. A missing total line asks once. One PDF the committee keeps. Dana masuk lists donors by RT, with numbering restarted in each RT and a subtotal after each group. Dana keluar is a numbered list of item and amount, then the total. The ringkasan is one line per RT subtotal, then Saldo awal with the leftover-cash wording, then the expenses, then Saldo akhir. Donor names do not appear on the ringkasan. A real income message is 100–200 rows. Expenses stay under 30. An optional signature block at the end.
 
 ## Later
 
 A Word file, so the print shop can edit the layout. A second layout does not fit this afternoon.
 
-A separate per-RT or per-group section in the PDF. Page one stays the four numbers.
+A separate per-group section in the PDF. Dana masuk is already grouped by RT.
 
 ## Explicitly Cut
 

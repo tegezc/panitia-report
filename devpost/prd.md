@@ -13,10 +13,10 @@ Source: `scope.md > The Unique Kernel`, `scope.md > The Core Loop`, `scope.md > 
 
 1. She opens one phone page. The title is Panitia Report. Under it, one line: "Tempel dua pesan WhatsApp yang sudah kamu kirim." Two empty boxes are stacked: "Dana masuk", then "Dana keluar". Each hint says "Tempel pesan di sini". One button, "Baca pesan", sits under both. There is no download button, no account, and no form for typing transactions one by one.
 2. She pastes each broadcast as she already sent it and taps **Baca pesan**. The title stays. The boxes collapse into two lines she can reopen, "Dana masuk" and "Dana keluar", each showing how many lines were read. Event name and date come from the income header and are editable. The page shows Saldo awal, Total donasi, Total pengeluaran, and Saldo akhir.
-3. Each message is a list of rows. Her original line stays unchanged beside the reading. A clear line needs nothing. A yellow line is a guess still in the sum, and she accepts it or replaces it. A red line is missing from the sum until she types an amount or marks it not a transaction. A header, footer, divider, or bank-account line is set aside, still visible, and she can pull it back.
+3. Income is grouped by RT. Each group shows its name and subtotal. Each donor is one closed tile, a single line with the name and the amount, and a closed tile has no buttons. She taps one tile and its detail opens directly under that tile only: the original WhatsApp line, the reading, and the fix actions for that row. Other tiles stay closed. Tapping another tile closes the previous detail. Expenses use the same closed-tile pattern. A clear line needs nothing. A yellow line is a guess still in the sum, and she accepts it or replaces it. A red line is missing from the sum until she types an amount or marks it not a transaction. A header, footer, divider, or bank-account line is set aside, still visible as a closed tile, and she can pull it back from its detail. Kas sisa is Saldo awal and is not a donor tile.
 4. At the top of each message's list is the total used for the match. If she wrote one, it reads "TOTAL tertulis: Rp X" and she taps **Ubah** to change the number. That total line is not also a row she can count. The paste does not change. If a message has no total line, the page asks once whether the computed total is right. If a pasted message does not match, the difference stays pinned: which message, and the difference in rupiah.
 5. **Unduh PDF** stays on the page and does nothing useful until every pasted message matches its total, every yellow line is settled, and every red line has an amount or is marked **Bukan transaksi**. Set-aside lines do not block it. While it is blocked it says "Masih ada baris yang perlu dicek."
-6. She can skip signatures. If she adds any, they are a role and a name, up to three. The PDF's first page is the event name, the date, and the four numbers. If Saldo awal came from a line, that line's original wording sits with Saldo awal on page one, and the line is not repeated in the income list. The pages after are the donations, then the expenses. The signature block is last, and only if she added one.
+6. She can skip signatures. If she adds any, they are a role and a name, up to three. The PDF is the laporan the committee keeps, in three parts. Dana masuk has the event name and date, columns No., Nama, and Jumlah, numbering that restarts in each RT, and a subtotal after each group. Dana keluar is a numbered list of item and amount, then the total. The ringkasan is one line per RT subtotal, then Saldo awal with the Kas sisa wording when it came from a line, then the expenses, then Saldo akhir. Donor names do not appear on the ringkasan. Kas sisa is not repeated as a donation. The signature block is last, and only if she added one.
 7. If she leaves and comes back on the same phone, that report is still there. **Laporan baru**, after she confirms, clears the page back to the two empty boxes. Another phone does not have the report.
 
 ## Screens and Layout
@@ -25,7 +25,7 @@ One phone page, stacked. It is never two columns.
 
 **Before a reading.** Title, the one instruction line, the two paste boxes, **Baca pesan**. Nothing else.
 
-**After a reading.** Title, then the two collapsed message lines. Under those, the editable event name and date. Then the four numbers in one bordered table. If a rupiah gap remains, a line pinned at the top names the message and the difference. Under the four numbers, "Tanda tangan", empty until she adds someone. Each message is a list of rows under its collapsed line. **Unduh PDF** is on the page. **Laporan baru** is on the page once a report is open.
+**After a reading.** Title, then the two collapsed message lines. Under those, the editable event name and date. Then the four numbers in one bordered table. If a rupiah gap remains, a line pinned at the top names the message and the difference. Under the four numbers, "Tanda tangan", empty until she adds someone. Income is grouped by RT, each group with its name and subtotal, then one closed tile per donor. Expenses are closed tiles. A real income message is 100–200 rows, and expenses stay under 30, so a closed tile is one line and the fix actions appear only under the tile she tapped. **Unduh PDF** is on the page. **Laporan baru** is on the page once a report is open.
 
 She reopens a collapsed line to see the paste again. Row edits never change that paste.
 
@@ -41,7 +41,7 @@ A clear line has no fill. A yellow line is a pale amber row. A red line is a pal
 
 **Unduh PDF** is a solid dark-green button when it works, and the same button greyed out while it shows "Masih ada baris yang perlu dicek."
 
-The PDF is the same document in black text on white. Its title is centered, then the four-number table.
+The PDF is black text on white, in three parts: Dana masuk by RT, Dana keluar, then the ringkasan. It is not a one-page list titled Panitia Report.
 
 ## Features and Behavior
 
@@ -177,16 +177,19 @@ Source: `scope.md > Who It's For`, `scope.md > The POC Boundary`.
 
 **Unduh PDF** downloads one PDF only when the button works, as defined under **The four numbers**.
 
-Page one is the event name, the date, and the four numbers, with the title centered above the table. On page one, Saldo awal shows the amount. If it came from a line, that line's original wording sits with Saldo awal.
+Dana masuk comes first: the event name, the date, and columns No., Nama, and Jumlah. Numbering restarts in each RT. A subtotal follows each group. A line lifted into Saldo awal is not a donation row.
 
-The pages after that are a flat list of the lines she counted, income first, then expenses, in the order she pasted them. The income list is only the donations. A line lifted into Saldo awal does not appear again there. Each line shows the name and RT, or the item and expense group, and the amount. There is no per-RT section and no per-group section.
+Dana keluar is a numbered list of item and amount, then the total.
+
+The ringkasan is one line per RT subtotal, then Saldo awal. If Saldo awal came from a line, that line's original wording sits with it. Then the expenses, then Saldo akhir. Donor names do not appear on the ringkasan.
 
 The signature block is last, and only if she added one.
 
 - [ ] The file does not download while the button is grey.
-- [ ] Page one shows the event name, the date, and the four labeled numbers, and nothing grouped by RT or by expense group.
-- [ ] When Saldo awal came from a line, page one shows that amount together with the line's original wording, and that line is absent from the income list.
-- [ ] Later pages list donation lines, then expense lines, in paste order, each with the reading and the amount.
+- [ ] Dana masuk shows the event name, the date, columns No., Nama, and Jumlah, numbering that restarts in each RT, and a subtotal after each group.
+- [ ] When Saldo awal came from a line, the ringkasan shows that amount together with the line's original wording, and that line is absent from Dana masuk.
+- [ ] Dana keluar is a numbered list of item and amount, then the total.
+- [ ] The ringkasan lists one line per RT subtotal, then Saldo awal, then the expenses, then Saldo akhir, and it does not list donor names.
 - [ ] Names she added appear at the end. No added names means no signature block.
 
 Source: `scope.md > The POC Boundary`, `scope.md > What "Working" Looks Like`.
@@ -242,7 +245,7 @@ Source: `scope.md > Who It's For`.
 - Set-aside lines stay visible and do not block the download — a header or a bank line might still be a donation, but it is not a guess about a number.
 - There is only one Saldo awal, and the amounts do not add — marking a line replaces a typed figure, typing replaces a marked line, and a second mark sends the first line back into the donations. She cannot type a Saldo awal larger than the income total.
 - A written total sits at the top of that message's list as "TOTAL tertulis: Rp X" — she taps **Ubah**, the paste stays unchanged, and that total line is not a row she can count.
-- A line lifted into Saldo awal is not repeated in the PDF income list — the list is only the donations, and the line's original wording sits with Saldo awal on page one.
+- A line lifted into Saldo awal is not repeated in Dana masuk — the list is only the donations, and the line's original wording sits with Saldo awal on the ringkasan.
 - The report remains on the same phone — she may leave and come back — and **Laporan baru** is how she throws it away.
 - Reading again asks first, and only the message she rebuilds loses its corrections — the other message and the signature names survive.
 - Skip signatures by doing nothing — the block is optional.
@@ -259,20 +262,20 @@ Source: `scope.md > Who It's For`.
 - "TOTAL tertulis: Rp X" at the top of a message that already has a total, edited with **Ubah**, and not counted as a row.
 - Editable event name and date.
 - Optional signature names, up to three.
-- One PDF: page one as specified, including the original wording when Saldo awal came from a line, then the donation lines and the expense lines, then signatures only if added.
+- One PDF in three parts: Dana masuk grouped by RT, Dana keluar as a numbered list, and a ringkasan without donor names, then signatures only if added.
 - The report still there on the same phone, and **Laporan baru** after confirmation.
 - A confirm-before-rebuild when she reads a paste again.
 
 ## Deferred From the POC
 
 - A Word file, so the print shop can edit the layout. A second layout does not fit this proof of concept. Source: `scope.md > Later`.
-- A separate per-RT or per-group section in the PDF. Page one stays the four numbers. Source: `scope.md > Later`.
+- A separate per-group section in the PDF. Dana masuk is already grouped by RT. Source: `scope.md > Later`.
 
 ## Possible Later Enhancements
 
 A Word file of the same report, for a print shop that wants to change the layout.
 
-A later PDF section that groups lines by RT or by expense group, after page one.
+A later PDF section that groups expenses by expense group. Dana masuk is already grouped by RT.
 
 ## Non-Goals
 

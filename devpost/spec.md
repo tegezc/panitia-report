@@ -59,7 +59,7 @@ Carried from `prd.md > Look and Feel` and `scope.md > Inspiration & Identity`.
 
 Off-white page, near-black text, thin ruled lines. The device font. No custom font file, no gradient, no illustration. A clear row has no fill. A yellow row is pale amber. A red row is pale red. A set-aside row is grey. The four numbers sit in one bordered table, large enough to read in sunlight. **Unduh PDF** is solid dark green when it works, and the same button greyed out while it shows "Masih ada baris yang perlu dicek."
 
-The PDF is black text on white. The title is centered, then the four-number table. CSS does the screen. pdf-lib draws the file. The stack can honor this direction without a design system.
+The PDF is black text on white, in three parts: Dana masuk by RT, Dana keluar, then the ringkasan. It is not a one-page list titled Panitia Report. CSS does the screen. pdf-lib draws the file. The stack can honor this direction without a design system.
 
 Copy she sees is the Indonesian already named in the PRD. Two sentences and the **Laporan baru** confirm words are still open; see **Decisions and Open Issues**.
 
@@ -67,7 +67,7 @@ Copy she sees is the Indonesian already named in the PRD. Two sentences and the 
 
 ### The page
 
-`index.html` plus `app.js`. One stacked phone page. It is never two columns. Before a reading: title "Panitia Report", the line "Tempel dua pesan WhatsApp yang sudah kamu kirim.", the two boxes, **Baca pesan**. After a reading: title, two collapsed lines, editable event name and date, the gap line if any, the four-number table, "Tanda tangan", the row lists, **Unduh PDF**, **Laporan baru**.
+`index.html` plus `app.js`. One stacked phone page. It is never two columns. Before a reading: title "Panitia Report", the line "Tempel dua pesan WhatsApp yang sudah kamu kirim.", the two boxes, **Baca pesan**. After a reading: title, two collapsed lines, editable event name and date, the gap line if any, the four-number table, "Tanda tangan", income grouped by RT into closed tiles, expenses as closed tiles, **Unduh PDF**, **Laporan baru**. A closed tile is one line, name and amount, with no buttons. Tap opens that tile's detail only. A real income message is 100–200 rows. Expenses stay under 30.
 
 There is no second screen.
 
@@ -114,7 +114,7 @@ Same shape, same proposal method: first digit, the next three digits, then the f
 
 ### Rows
 
-Drawn by `app.js` from the parse result. Once a question is cleared, the row is clear. A clear row can still be changed with **Ubah** (amount, name, RT, or expense group).
+Drawn by `app.js` from the parse result. Income donors are grouped by RT, each group showing its name and subtotal. Kas sisa is not a donor tile. Each donor or expense is a closed tile: one line, name and amount, no buttons. The open detail, under that tile only, shows the original line, the reading, and the actions that apply. Tapping another tile closes the previous detail. Once a question is cleared, the row is clear. A clear row can still be changed with **Ubah** (amount, name, RT, or expense group) from its open detail.
 
 - **Clear.** Amount is in the sum. No fill.
 - **Yellow, ambiguous amount.** Proposed amount is in the sum. **Benar** keeps it and clears the question. **Ubah** edits the fields. `Rp.2000.0000` is this row.
@@ -170,11 +170,15 @@ PRD ref: `prd.md > Signatures`.
 
 `pdf.js`, using `PDFLib.PDFDocument`. **Unduh PDF** calls `save()`, wraps the bytes in a `Blob`, and clicks a temporary link with the `download` attribute. The file name is `laporan-kas.pdf`. A grey button does not call this.
 
-Page one: centered title, the stored event name, the date, then the four numbers. `pdf.js` draws that stored name. It must not be asked to draw the em dash from the header. If Saldo awal came from a line, that line's original wording sits with Saldo awal on page one, and that line is absent from the income list. For the excerpts that wording is `75. Kas sisa 2024 : Rp. 500.000`.
+Three parts, not a flat list titled Panitia Report. `pdf.js` draws the stored event name. It must not be asked to draw the em dash from the header.
 
-Later pages: donation lines, then expense lines, in paste order. Each line shows the name and RT, or the item and expense group, and the amount. No per-RT section and no per-group section.
+Dana masuk: event name and date, columns No., Nama, Jumlah. Numbering restarts in each RT. A subtotal follows each group. A line lifted into Saldo awal is absent here.
 
-The signature block is last, and only if she added one.
+Dana keluar: a numbered list of item and amount, then the total.
+
+Ringkasan: one line per RT subtotal, then Saldo awal. If it came from a line, that line's original wording sits with Saldo awal. For the excerpts that wording is `75. Kas sisa 2024 : Rp. 500.000`. Then the expenses, then Saldo akhir. Donor names do not appear on this part.
+
+The signature block is last, and only if she added one. A real income message is 100–200 rows, so Dana masuk continues onto the next page. Expenses stay under 30.
 
 PRD ref: `prd.md > The PDF`.
 
@@ -283,7 +287,7 @@ The build step that copies this file is a one-time download by the developer. Th
 - **Browser storage for one site** instead of accounts — already cut in `scope.md > Explicitly Cut`. Another phone does not have the report.
 - **Empty expense group and empty RT when the line has none** instead of guessing a group or an RT — she can fill both with **Ubah**.
 
-Word output and a per-RT or per-group PDF section stay deferred, as in `prd.md > Deferred From the POC`.
+Word output and a per-group expense section stay deferred, as in `prd.md > Deferred From the POC`. Dana masuk in the PDF is grouped by RT.
 
 ## Decisions and Open Issues
 
