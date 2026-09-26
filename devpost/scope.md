@@ -13,7 +13,7 @@ Stop on the line a normal app would hide. In a real income message, one line say
 
 ## Who It's For
 
-The learner's sibling is the treasurer of recurring neighborhood events (17 Agustus, Maulid Nabi). She only has a phone. She records money in and out as messy WhatsApp messages, and she cannot use Word or Excel. There is no printer at home. Today the learner turns those messages into the report and is the workaround.
+A neighborhood-event treasurer looks after recurring neighborhood events (17 Agustus, Maulid Nabi). She only has a phone. She records money in and out as messy WhatsApp messages, and she cannot use Word or Excel. There is no printer at home. Today the learner turns those messages into the report and is the workaround.
 
 After she is done, two groups touch the report and neither of them types the transactions. The neighborhood WhatsApp group reads it on their phones and should see the answer on the first page: opening balance, donations, expenses, closing balance. A printed copy is what the committee keeps. She takes the PDF to a print shop or sends it back to the group. An optional signature block at the end — usually the committee chair and the treasurer, sometimes the neighborhood head — is for people who sign. They do not enter the money.
 
@@ -31,7 +31,7 @@ One phone page. The WhatsApp wording stays visible beside each reading. The PDF'
 
 ## Why This Matters to the Learner
 
-What excites the learner is the moment the money is wrong in a way a normal app would hide. The learner is the person who currently produces the report. The sibling should be able to do it on her phone.
+What excites the learner is the moment the money is wrong in a way a normal app would hide. The learner is the person who currently produces the report. The treasurer should be able to do it on her phone.
 
 ## What "Working" Looks Like
 

@@ -47,7 +47,7 @@ What to record, using `fixtures/excerpts.txt`:
 
 1. Paste **Money in** and **Money out** as written. Tap **Read messages**.
 2. Show the yellow `Rp.2000.0000` row proposing Rp 2.000.000, the yellow panitia multiplication (Calculated Rp 110.000, Written Rp 100.000), "Kas sisa 2024" as Opening balance, and the bank line set aside.
-3. Show the four numbers: Opening balance Rp 500.000, Donations Rp 9.000.000, Expenses Rp 4.611.000, Closing balance Rp 4.889.000. The button stays labeled **Download PDF** and is disabled. Under it: "Rows still need a check."
+3. Show the four numbers: Opening balance Rp 500.000, Donations Rp 11.350.000, Expenses Rp 4.611.000, Closing balance Rp 7.239.000. The button stays labeled **Download PDF** and is disabled. Under it: "Rows still need a check."
 4. Tap **Confirm** on the amount and **Use written** on the multiplication. The button turns dark green and the PDF downloads.
 5. Reload the tab. The same report is still there.
 
@@ -130,9 +130,9 @@ Calculated in `app.js`. Labels, on the phone and on PDF page one: Opening balanc
 
 Income total is the sum of counted income amounts, including the Opening balance line. Donations is the income total minus Opening balance. Closing balance is Opening balance plus Donations minus Expenses. Closing balance is computed.
 
-For the excerpts, after the proposed Rp 2.000.000 is in the sum and the panitia line still uses Written: income total Rp 9.500.000, Opening balance Rp 500.000, Donations Rp 9.000.000, Expenses Rp 4.611.000, Closing balance Rp 4.889.000.
+For the excerpts, after the proposed Rp 2.000.000 is in the sum and the panitia line still uses Written: income total Rp 11.850.000, Opening balance Rp 500.000, Donations Rp 11.350.000, Expenses Rp 4.611.000, Closing balance Rp 7.239.000.
 
-The Money in total compared with Written total includes Kas sisa, so a written Rp 9.500.000 matches the three donations plus Kas sisa Rp 500.000. A rupiah gap stays pinned at the top and names which total is short, and by how much: "Money in is short Rp X." when the counted total is short, or "Written total Money in is short Rp X." when the written total is short. The same pattern is used for Money out. A difference of zero is not enough to download while a yellow or red row is still open.
+The Money in total compared with Written total includes Kas sisa, so a written Rp 11.850.000 matches the donations plus Kas sisa Rp 500.000. A rupiah gap stays pinned at the top and names which total is short, and by how much: "Money in is short Rp X." when the counted total is short, or "Written total Money in is short Rp X." when the written total is short. The same pattern is used for Money out. A difference of zero is not enough to download while a yellow or red row is still open.
 
 **Download PDF** works only when every pasted message matches its total, every yellow line is settled, and every red line has an amount or is **Not a transaction**. "Not pasted" is not a pasted message. Set-aside rows do not keep the button grey. While blocked, the button stays labeled **Download PDF** and disabled. The line under it says "Rows still need a check:" followed by the row's name only when a yellow or red row is still open. A hidden Opening balance row does not count. A total mismatch names which total is short and by how much. When it works, it is dark green and the file downloads.
 
@@ -299,7 +299,7 @@ Learner choices:
 - `Rp.2000.0000` is not the normal thousands shape. The page proposes Rp 2.000.000, puts that figure in the sum, and the row stays yellow until **Confirm**.
 - Event name `PERINGATAN HARI KEMERDEKAAN RI`. Date `Senin, 17 Agustus 2026`. The rest of the header line stays set aside. She can edit both. The mark between `LAPORAN DANA MASUK` and the event name in the fixture is an em dash (U+2014), not a hyphen. The stored event name has that mark removed. The PDF is not asked to draw it.
 - `75. Kas sisa 2024 : Rp. 500.000` is an income row. A description matching Kas sisa marks that row as Opening balance and keeps it out of Donations. Its amount still counts toward the income total. Kas sisa is not a separate rule for lines that failed the income-row match.
-- The four numbers for these excerpts are Opening balance Rp 500.000, Donations Rp 9.000.000, Expenses Rp 4.611.000, Closing balance Rp 4.889.000.
+- The four numbers for these excerpts are Opening balance Rp 500.000, Donations Rp 11.350.000, Expenses Rp 4.611.000, Closing balance Rp 7.239.000.
 
 Derived from those choices: classic scripts so `file://` works; one `localStorage` key; integer rupiah; Helvetica; blank lines skipped; expense group and missing RT start empty; the four-and-four proposal method above.
 
