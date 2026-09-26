@@ -1,49 +1,49 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Panitia Report</title>
-  <link rel="stylesheet" href="styles.css?v=20260926b">
+  <link rel="stylesheet" href="styles.css?v=20260926f">
 </head>
 <body>
   <main>
     <h1>Panitia Report</h1>
-    <p class="instruction">Tempel dua pesan WhatsApp yang sudah kamu kirim.</p>
+    <p class="instruction">Paste the two WhatsApp messages you already sent.</p>
 
     <section id="paste-view">
       <p id="paste-note" class="note"></p>
-      <label for="income-paste">Dana masuk</label>
-      <textarea id="income-paste" placeholder="Tempel pesan di sini"></textarea>
-      <label for="expense-paste">Dana keluar</label>
-      <textarea id="expense-paste" placeholder="Tempel pesan di sini"></textarea>
-      <button id="read-button" type="button">Baca pesan</button>
+      <label for="income-paste">Money in</label>
+      <textarea id="income-paste" placeholder="Paste a message here"></textarea>
+      <label for="expense-paste">Money out</label>
+      <textarea id="expense-paste" placeholder="Paste a message here"></textarea>
+      <button id="read-button" type="button">Read messages</button>
     </section>
 
     <section id="confirm" hidden>
       <p id="confirm-text"></p>
-      <button id="confirm-yes" type="button">Lanjut</button>
-      <button id="confirm-no" type="button">Batal</button>
+      <button id="confirm-yes" type="button">Confirm</button>
+      <button id="confirm-no" type="button">Cancel</button>
     </section>
 
     <section id="report-view" hidden>
       <p id="storage-note" class="note" hidden></p>
       <p id="gap" class="gap" hidden></p>
-      <label for="event-name">Nama acara</label>
+      <label for="event-name">Event name</label>
       <input id="event-name" type="text">
-      <label for="event-date">Tanggal</label>
+      <label for="event-date">Date</label>
       <input id="event-date" type="text">
       <table class="figures">
-        <tr><th>Saldo awal</th><td id="saldo-awal"></td></tr>
-        <tr><th>Total donasi</th><td id="total-donasi"></td></tr>
-        <tr><th>Total pengeluaran</th><td id="total-pengeluaran"></td></tr>
-        <tr><th>Saldo akhir</th><td id="saldo-akhir"></td></tr>
+        <tr><th>Opening balance</th><td id="saldo-awal"></td></tr>
+        <tr><th>Donations</th><td id="total-donasi"></td></tr>
+        <tr><th>Expenses</th><td id="total-pengeluaran"></td></tr>
+        <tr><th>Closing balance</th><td id="saldo-akhir"></td></tr>
       </table>
       <div class="report-actions">
-        <button id="download" class="download" type="button" disabled>Unduh PDF</button>
-        <button id="new-report" type="button">Laporan baru</button>
+        <button id="download" class="download" type="button" disabled>Download PDF</button>
+        <button id="new-report" type="button">New report</button>
       </div>
-      <p id="download-note">Masih ada baris yang perlu dicek.</p>
+      <p id="download-note">Rows still need a check.</p>
       <div id="signatures"></div>
       <div id="income-list"></div>
       <div id="expense-list"></div>
@@ -52,7 +52,7 @@
   </main>
   <script src="vendor/pdf-lib.min.js"></script>
   <script src="parse.js"></script>
-  <script src="pdf.js"></script>
-  <script src="app.js?v=20260926b"></script>
+  <script src="pdf.js?v=20260926g"></script>
+  <script src="app.js?v=20260926g"></script>
 </body>
 </html>

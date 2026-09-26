@@ -123,10 +123,11 @@ button.download.ready {
   margin: 0.2rem 0 0.4rem;
 }
 
-.total-line {
+.total-line,
+.written-total {
   margin: 0.45rem 0;
   padding: 0.4rem 0.5rem;
-  background: #1c1c1c;
+  background: #243e5a;
   color: #f6f1e7;
   font-weight: 700;
 }
@@ -139,6 +140,9 @@ button.download.ready {
 
 .group-head {
   margin: 0.7rem 0 0.15rem;
+  padding: 0.4rem 0.5rem;
+  background: #6b4f32;
+  color: #f6f1e7;
   font-weight: 650;
 }
 

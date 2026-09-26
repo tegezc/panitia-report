@@ -2,9 +2,15 @@
 *LAPORAN DANA MASUK—PERINGATAN HARI KEMERDEKAAN RI | Senin, 17 Agustus 2026*
 1. Bpk. H. Warga A RT.01  : Rp 1.000.000
 2. Warga B RT.02 : Rp 6.000.000
+3. Warga C RT.01 : Rp 250.000
+4. Ibu Warga D RT.03 : Rp 500.000
+5. Bpk. Warga E RT.02 : Rp 750.000
+6. Warga G RT.03 : Rp 300.000
+7. Ibu Warga H RT.04 : Rp 150.000
+8. Warga I RT.01 : Rp 400.000
 75. Kas sisa 2024 : Rp. 500.000
 102. Bpk H. Warga F : Rp.2000.0000
-TOTAL DANA MASUK : Rp. 9.500.000
+TOTAL DANA MASUK : Rp. 11.850.000
 Rekening panitia 1234567890
 --- dana keluar ---
 DANA KELUAR

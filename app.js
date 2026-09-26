@@ -12,13 +12,13 @@ function parseTypedAmount(text) {
 }
 
 function rowCountLabel(label, count) {
-  return label + " · " + count + " baris terbaca";
+  return label + " · " + count + " rows read";
 }
 
 function shortfall(label, written, computed) {
   var diff = written - computed;
-  if (diff > 0) return label + " kurang " + formatRp(diff);
-  return "TOTAL tertulis " + label + " kurang " + formatRp(-diff);
+  if (diff > 0) return label + " is short " + formatRp(diff);
+  return "Written total " + label + " is short " + formatRp(-diff);
 }
 
 function createReport(income, expense) {
@@ -87,7 +87,7 @@ function incomeMatch(report, figures) {
 function totalIssue(message, label, computed) {
   if (!message) return "";
   if (message.total.state === "unasked" || message.total.state === "empty" || message.total.amount === null) {
-    return label + " belum ada TOTAL.";
+    return label + " has no written total.";
   }
   if (message.total.amount !== computed) return shortfall(label, message.total.amount, computed) + ".";
   return "";
@@ -96,9 +96,9 @@ function totalIssue(message, label, computed) {
 function blockNote(report, figures) {
   var parts = [];
   var unchecked = uncheckedLabels(report);
-  if (unchecked.length) parts.push("Masih ada baris yang perlu dicek: " + unchecked.join(", ") + ".");
-  var incomeIssue = totalIssue(report.income, "Dana masuk", incomeMatch(report, figures));
-  var expenseIssue = totalIssue(report.expense, "Dana keluar", figures.totalPengeluaran);
+  if (unchecked.length) parts.push("Rows still need a check: " + unchecked.join(", ") + ".");
+  var incomeIssue = totalIssue(report.income, "Money in", incomeMatch(report, figures));
+  var expenseIssue = totalIssue(report.expense, "Money out", figures.totalPengeluaran);
   if (incomeIssue) parts.push(incomeIssue);
   if (expenseIssue) parts.push(expenseIssue);
   return parts.join(" ");
@@ -190,18 +190,18 @@ var openTile = null;
 var reopenList = null;
 
 function readingText(row, kind) {
-  if (row.status === "aside") return "Tidak dihitung";
-  if (row.status === "red") return "Belum ada jumlah";
+  if (row.status === "aside") return "Not counted";
+  if (row.status === "red") return "No amount yet";
   if (kind === "income") {
     var rt = row.rt ? " RT " + row.rt : "";
-    var marked = row.saldoAwal ? " · Saldo awal" : "";
+    var marked = row.saldoAwal ? " · Opening balance" : "";
     return row.name + rt + " · " + formatRp(row.amount) + marked;
   }
   var group = row.group ? " · " + row.group : "";
   var text = row.item + group + " · " + formatRp(row.amount);
   if (row.multiply) {
-    text += " · Hitung: " + row.multiply.qty + " × " + formatRp(row.multiply.unit) + " = " + formatRp(row.multiply.product);
-    text += " · Tertulis: " + formatRp(row.multiply.written);
+    text += " · Calculated: " + row.multiply.qty + " × " + formatRp(row.multiply.unit) + " = " + formatRp(row.multiply.product);
+    text += " · Written: " + formatRp(row.multiply.written);
   }
   return text;
 }
@@ -218,10 +218,10 @@ function addButton(parent, label, onClick) {
 function amountField(parent, onCommit) {
   var input = document.createElement("input");
   input.type = "text";
-  input.placeholder = "Jumlah";
+  input.placeholder = "Amount";
   var save = document.createElement("button");
   save.type = "button";
-  save.textContent = "Simpan";
+  save.textContent = "Save";
   save.addEventListener("click", function () {
     var amount = parseTypedAmount(input.value);
     if (amount === null) return;
@@ -236,8 +236,8 @@ function tileTitle(row, kind) {
     var raw = row.raw.replace(/\s+/g, " ");
     return raw.length > 48 ? raw.slice(0, 48) + "…" : raw;
   }
-  var amount = row.amount === null ? "Belum ada jumlah" : formatRp(row.amount);
-  var name = kind === "income" ? (row.name || "Tanpa nama") : (row.item || "Tanpa item");
+  var amount = row.amount === null ? "No amount yet" : formatRp(row.amount);
+  var name = kind === "income" ? (row.name || "No name") : (row.item || "No item");
   return name + "  " + amount;
 }
 
@@ -256,23 +256,23 @@ function renderDetail(row, kind) {
   actions.className = "actions";
 
   if (row.status === "yellow-amount") {
-    addButton(actions, "Benar", function () { acceptAmount(row); drawReport(); });
-    addButton(actions, "Ubah", function () { showEdit(actions, row, kind); });
+    addButton(actions, "Confirm", function () { acceptAmount(row); drawReport(); });
+    addButton(actions, "Edit", function () { showEdit(actions, row, kind); });
   } else if (row.status === "yellow-multiply") {
-    addButton(actions, "Pakai tertulis", function () { keepWritten(row); drawReport(); });
-    addButton(actions, "Pakai hitungan", function () { useProduct(row); drawReport(); });
+    addButton(actions, "Use written", function () { keepWritten(row); drawReport(); });
+    addButton(actions, "Use calculated", function () { useProduct(row); drawReport(); });
   } else if (row.status === "red") {
     amountField(actions, function (amount) { setRowAmount(row, amount); drawReport(); });
-    addButton(actions, "Bukan transaksi", function () { markNotTransaction(row); drawReport(); });
+    addButton(actions, "Not a transaction", function () { markNotTransaction(row); drawReport(); });
   } else if (row.status === "aside") {
-    addButton(actions, "Ini transaksi", function () {
+    addButton(actions, "This is a transaction", function () {
       actions.innerHTML = "";
       amountField(actions, function (amount) { countSetAside(row, amount); drawReport(); });
     });
   } else if (row.status === "clear") {
-    addButton(actions, "Ubah", function () { showEdit(actions, row, kind); });
+    addButton(actions, "Edit", function () { showEdit(actions, row, kind); });
     if (kind === "income") {
-      addButton(actions, "Saldo awal", function () { markOpening(pageReport, row); drawReport(); });
+      addButton(actions, "Opening balance", function () { markOpening(pageReport, row); drawReport(); });
     }
   }
 
@@ -318,7 +318,7 @@ function showEdit(actions, row, kind) {
   name.type = "text";
   if (kind === "income") {
     name.value = row.name;
-    name.placeholder = "Nama";
+    name.placeholder = "Name";
     var rt = document.createElement("input");
     rt.type = "text";
     rt.value = row.rt;
@@ -332,12 +332,12 @@ function showEdit(actions, row, kind) {
     var group = document.createElement("input");
     group.type = "text";
     group.value = row.group;
-    group.placeholder = "Kelompok";
+    group.placeholder = "Group";
     actions.appendChild(amount);
     actions.appendChild(name);
     actions.appendChild(group);
   }
-  addButton(actions, "Simpan", function () {
+  addButton(actions, "Save", function () {
     var next = parseTypedAmount(amount.value);
     if (next === null) return;
     setRowAmount(row, next);
@@ -356,29 +356,29 @@ function renderTotal(host, label, message, computed) {
   var total = document.createElement("p");
   total.className = "written-total total-line";
   if (!message) {
-    total.textContent = "TOTAL tertulis: " + formatRp(0);
+    total.textContent = "Written total: " + formatRp(0);
     host.appendChild(total);
     return;
   }
   if (message.total.state === "unasked") {
-    total.textContent = "Tidak ada baris TOTAL. Yang terbaca " + formatRp(computed) + ". Apakah benar?";
+    total.textContent = "There is no TOTAL line. Read as " + formatRp(computed) + ". Is that right?";
     host.appendChild(total);
     var ask = document.createElement("p");
     ask.className = "actions";
-    addButton(ask, "Ya", function () { acceptComputedTotal(message, computed); drawReport(); });
-    addButton(ask, "Tidak", function () { rejectComputedTotal(message); drawReport(); });
+    addButton(ask, "Yes", function () { acceptComputedTotal(message, computed); drawReport(); });
+    addButton(ask, "No", function () { rejectComputedTotal(message); drawReport(); });
     host.appendChild(ask);
     return;
   }
   if (message.total.state === "empty") {
-    total.textContent = "TOTAL tertulis: belum diisi";
+    total.textContent = "Written total: empty";
   } else {
-    total.textContent = "TOTAL tertulis: " + formatRp(message.total.amount);
+    total.textContent = "Written total: " + formatRp(message.total.amount);
   }
   host.appendChild(total);
   var edit = document.createElement("p");
   edit.className = "actions";
-  addButton(edit, "Ubah", function () {
+  addButton(edit, "Edit", function () {
     edit.innerHTML = "";
     amountField(edit, function (amount) { setMatchTotal(message, amount); drawReport(); });
   });
@@ -387,11 +387,11 @@ function renderTotal(host, label, message, computed) {
 
 function renderMessage(host, label, message, computed) {
   host.innerHTML = "";
-  host.className = label === "Dana masuk" ? "section-income" : "section-expense";
+  host.className = label === "Money in" ? "section-income" : "section-expense";
   var summary = document.createElement("p");
   summary.className = "summary";
   if (!message) {
-    summary.textContent = label + " · Tidak ditempel";
+    summary.textContent = label + " · Not pasted";
     host.appendChild(summary);
     renderTotal(host, label, null, 0);
     return;
@@ -400,7 +400,7 @@ function renderMessage(host, label, message, computed) {
   host.appendChild(summary);
   var reopenSlot = document.createElement("div");
   reopenSlot.className = "reopen-slot";
-  addButton(host, "Lihat pesan", function () {
+  addButton(host, "Show message", function () {
     reopenList = reopenList === label ? null : label;
     drawReport();
   });
@@ -411,10 +411,10 @@ function renderMessage(host, label, message, computed) {
     var area = document.createElement("textarea");
     area.value = message.raw;
     box.appendChild(area);
-    addButton(box, "Baca pesan", function () {
+    addButton(box, "Read messages", function () {
       if (area.value === message.raw) return;
-      askConfirm("Pesan ini akan dibaca ulang. Koreksi pada pesan ini hilang.", function () {
-        rereadMessage(label === "Dana masuk" ? "income" : "expense", area.value);
+      askConfirm("This message will be read again. Corrections on this message will be lost.", function () {
+        rereadMessage(label === "Money in" ? "income" : "expense", area.value);
       });
     });
     reopenSlot.appendChild(box);
@@ -422,7 +422,7 @@ function renderMessage(host, label, message, computed) {
   renderTotal(host, label, message, computed);
   var list = document.createElement("ul");
   list.className = "rows";
-  var kind = label === "Dana masuk" ? "income" : "expense";
+  var kind = label === "Money in" ? "income" : "expense";
   if (kind === "income") {
     var groups = [];
     var aside = [];
@@ -445,8 +445,8 @@ function renderMessage(host, label, message, computed) {
     }
     for (var n = 0; n < groups.length; n++) {
       var head = document.createElement("li");
-      head.className = "group-head total-line";
-      head.textContent = (groups[n].rt ? "RT " + groups[n].rt : "Tanpa RT") + "  " + formatRp(groupSubtotal(groups[n].entries));
+      head.className = "group-head";
+      head.textContent = (groups[n].rt ? "RT " + groups[n].rt : "No RT") + "  " + formatRp(groupSubtotal(groups[n].entries));
       list.appendChild(head);
       for (var t = 0; t < groups[n].entries.length; t++) {
         list.appendChild(renderTile(groups[n].entries[t].row, kind, groups[n].entries[t].index));
@@ -455,7 +455,7 @@ function renderMessage(host, label, message, computed) {
     if (aside.length) {
       var asideHead = document.createElement("li");
       asideHead.className = "group-head";
-      asideHead.textContent = "Tidak dihitung";
+      asideHead.textContent = "Not counted";
       list.appendChild(asideHead);
       for (var a = 0; a < aside.length; a++) list.appendChild(renderTile(aside[a].row, kind, aside[a].index));
     }
@@ -476,13 +476,13 @@ function renderMessage(host, label, message, computed) {
 function renderSignatures(host, report) {
   host.innerHTML = "";
   var title = document.createElement("p");
-  title.textContent = "Tanda tangan";
+  title.textContent = "Signatures";
   host.appendChild(title);
   for (var i = 0; i < report.signatures.length; i++) {
     (function (index) {
       var line = document.createElement("p");
       line.textContent = report.signatures[index].role + " · " + report.signatures[index].name;
-      addButton(line, "Hapus", function () {
+      addButton(line, "Delete", function () {
         report.signatures.splice(index, 1);
         drawReport();
       });
@@ -490,16 +490,16 @@ function renderSignatures(host, report) {
     })(i);
   }
   if (report.signatures.length >= 3) return;
-  addButton(host, "Tambah penandatangan", function () {
+  addButton(host, "Add a signatory", function () {
     var role = document.createElement("input");
     role.type = "text";
-    role.placeholder = "Jabatan";
+    role.placeholder = "Role";
     var name = document.createElement("input");
     name.type = "text";
-    name.placeholder = "Nama";
+    name.placeholder = "Name";
     host.appendChild(role);
     host.appendChild(name);
-    addButton(host, "Simpan", function () {
+    addButton(host, "Save", function () {
       if (report.signatures.length >= 3) return;
       if (!role.value.trim() || !name.value.trim()) return;
       report.signatures.push({ role: role.value.trim(), name: name.value.trim() });
@@ -523,22 +523,22 @@ function drawReport() {
 
   var incomeCompared = incomeMatch(report, figures);
   var gaps = [];
-  var incomeIssue = totalIssue(report.income, "Dana masuk", incomeCompared);
-  var expenseIssue = totalIssue(report.expense, "Dana keluar", figures.totalPengeluaran);
+  var incomeIssue = totalIssue(report.income, "Money in", incomeCompared);
+  var expenseIssue = totalIssue(report.expense, "Money out", figures.totalPengeluaran);
   if (incomeIssue && report.income.total.amount !== null && report.income.total.amount !== incomeCompared) gaps.push(incomeIssue);
   if (expenseIssue && report.expense.total.amount !== null && report.expense.total.amount !== figures.totalPengeluaran) gaps.push(expenseIssue);
   var gap = document.getElementById("gap");
   gap.hidden = gaps.length === 0;
   gap.textContent = gaps.join(" ");
   renderSignatures(document.getElementById("signatures"), report);
-  renderMessage(document.getElementById("income-list"), "Dana masuk", report.income, incomeCompared);
-  renderMessage(document.getElementById("expense-list"), "Dana keluar", report.expense, figures.totalPengeluaran);
+  renderMessage(document.getElementById("income-list"), "Money in", report.income, incomeCompared);
+  renderMessage(document.getElementById("expense-list"), "Money out", report.expense, figures.totalPengeluaran);
 
   var download = document.getElementById("download");
   var ready = gateOpen(report);
   var note = document.getElementById("download-note");
   download.disabled = !ready;
-  download.textContent = "Unduh PDF";
+  download.textContent = "Download PDF";
   download.className = ready ? "download ready" : "download";
   note.textContent = blockNote(report, figures);
   note.hidden = ready || !note.textContent;
@@ -555,7 +555,7 @@ function readPasted() {
   var incomeText = document.getElementById("income-paste").value;
   var expenseText = document.getElementById("expense-paste").value;
   if (!incomeText.trim() && !expenseText.trim()) {
-    showPaste("Tempel minimal satu pesan.");
+    showPaste("Paste at least one message.");
     return;
   }
   var income = incomeText.trim() ? parseMessage(incomeText, "income") : null;
@@ -580,7 +580,7 @@ function saveReport() {
   } catch (error) {
     if (note) {
       note.hidden = false;
-      note.textContent = "Laporan ini belum tersimpan di ponsel ini.";
+      note.textContent = "This report is not saved on this phone.";
     }
   }
 }
@@ -598,7 +598,7 @@ function loadReport() {
 function askConfirm(message, onYes) {
   confirmAction = onYes;
   document.getElementById("confirm-text").textContent = message;
-  document.getElementById("confirm-yes").textContent = "Lanjut";
+  document.getElementById("confirm-yes").textContent = "Confirm";
   document.getElementById("confirm").hidden = false;
 }
 
@@ -655,9 +655,9 @@ if (typeof document !== "undefined") {
     saveReport();
   });
   document.getElementById("new-report").addEventListener("click", function () {
-    document.getElementById("confirm-yes").textContent = "Hapus";
+    document.getElementById("confirm-yes").textContent = "Delete";
     confirmAction = clearReport;
-    document.getElementById("confirm-text").textContent = "Hapus laporan ini?";
+    document.getElementById("confirm-text").textContent = "Delete this report?";
     document.getElementById("confirm").hidden = false;
   });
   document.getElementById("confirm-no").addEventListener("click", function () {
@@ -694,7 +694,7 @@ if (typeof document !== "undefined") {
       link.remove();
     }).catch(function () {
       error.hidden = false;
-      error.textContent = "PDF gagal dibuat.";
+      error.textContent = "The PDF could not be created.";
     });
   });
 }

@@ -52,12 +52,12 @@ Build mode: fast
 ## Hands-on Checkpoints
 
 - [x] Early usable behavior explored — after slice 1, the paste page and the kernel reading
-- [ ] Final kick-the-tires exploration and feedback completed
+- [x] Final kick-the-tires exploration and feedback completed
 
 ## Final Review
 
-- [ ] Screen tiles and the three-part PDF — income grouped by RT, one open detail at a time, Dana masuk / Dana keluar / ringkasan, kernel unchanged
-- [ ] Final review complete — feedback resolved and learner confirms ready to ship
+- [x] Screen tiles and the three-part PDF — income grouped by RT, one open detail at a time, Dana masuk / Dana keluar / ringkasan, kernel unchanged
+- [x] Final review complete — feedback resolved and learner confirms ready to ship
 
 ## Code Tour and App Map
 
@@ -73,6 +73,12 @@ Activity mode: not started
 
 ## Revisions
 
+- The learner confirmed the proof of concept is ready to ship. No further product changes.
+- The screen's own labels are English. The pasted WhatsApp text stays Indonesian, including Rp.2000.0000, Kas sisa, RT, TOTAL, and the bank line. PDF columns stay No., Nama, Jumlah, Uraian, and Keterangan.
+- The income fixture has 10 transaction lines and the expense fixture still has 3. The written income TOTAL is Rp 11.850.000.
+- The PDF is a colored table in three parts, and each title is centered.
+- Written total in both sections and the Money out Total share one color. That color is not the button color. RT group headers stay a different color.
+- RT group headers are brown, separate from the black buttons and from the black TOTAL bars.
 - While a yellow or red row is still open, the line under Unduh PDF names that row. On the excerpt, that row is Bpk H. Warga F until Benar. A hidden Kas sisa row does not keep the button grey. The yellow tile is darker than the Dana masuk background so it can be seen.
 - Kas sisa counts in the Dana masuk total compared with TOTAL tertulis, so a written Rp 9.500.000 matches and the Rp 500.000 gap goes away. A total mismatch names which total is short and by how much. "Masih ada baris yang perlu dicek." is only for a yellow or red row. The tiles and the PDF stay as they were.
 - The income fixture and `spec.md > Components` now include `2. Warga B RT.02 : Rp 6.000.000` between the Rp 1.000.000 line and Kas sisa. The spec named the Rp 9.500.000 total without writing that clear donation line.

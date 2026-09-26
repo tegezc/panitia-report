@@ -28,9 +28,18 @@ function incomeGroups(rows) {
 
 function buildPdfBytes(report) {
   return PDFLib.PDFDocument.create().then(function (doc) {
-    return doc.embedFont(PDFLib.StandardFonts.Helvetica).then(function (font) {
+    return Promise.all([
+      doc.embedFont(PDFLib.StandardFonts.Helvetica),
+      doc.embedFont(PDFLib.StandardFonts.HelveticaBold)
+    ]).then(function (fonts) {
+      var font = fonts[0];
+      var bold = fonts[1];
       var page = null;
       var y = 800;
+      var left = 40;
+      var tableWidth = 515;
+      var bottom = 48;
+      var repeatHeader = null;
       var figures = reportFigures(report.income, report.expense, report.typedSaldoAwal);
       var openingRow = null;
       if (report.income) {
@@ -39,105 +48,185 @@ function buildPdfBytes(report) {
         }
       }
 
+      var navy = PDFLib.rgb(36 / 255, 62 / 255, 90 / 255);
+      var white = PDFLib.rgb(1, 1, 1);
+      var ink = PDFLib.rgb(0.11, 0.11, 0.11);
+      var group = PDFLib.rgb(107 / 255, 79 / 255, 50 / 255);
+      var wash = PDFLib.rgb(232 / 255, 237 / 255, 244 / 255);
+      var paper = PDFLib.rgb(1, 1, 1);
+      var grid = PDFLib.rgb(0.72, 0.76, 0.8);
+
       function newPage() {
         page = doc.addPage([595, 842]);
-        y = 800;
+        y = 790;
+        if (repeatHeader) repeatHeader();
       }
 
-      function ensure(height) {
-        if (y < height) newPage();
+      function fit(value, usedFont, size, maxWidth) {
+        var text = String(value);
+        if (usedFont.widthOfTextAtSize(text, size) <= maxWidth) return text;
+        while (text.length > 1 && usedFont.widthOfTextAtSize(text + "...", size) > maxWidth) {
+          text = text.slice(0, -1);
+        }
+        return text + "...";
       }
 
-      function text(value, x, size) {
+      function center(value, size, color, usedFont) {
+        var width = usedFont.widthOfTextAtSize(String(value), size);
         page.drawText(String(value), {
-          x: x,
+          x: (595 - width) / 2,
           y: y,
           size: size,
-          font: font,
-          color: PDFLib.rgb(0, 0, 0)
+          font: usedFont,
+          color: color
         });
       }
 
-      function line(value, x, size) {
-        ensure(36);
-        text(value, x, size);
-        y -= 16;
+      function paintRow(cells, fill, textColor, usedFont, size) {
+        var height = 22;
+        if (y - height < bottom) newPage();
+        var rowBottom = y - height;
+        page.drawRectangle({
+          x: left,
+          y: rowBottom,
+          width: tableWidth,
+          height: height,
+          color: fill,
+          borderColor: grid,
+          borderWidth: 0.6
+        });
+        var x = left;
+        for (var c = 0; c < cells.length; c++) {
+          if (c > 0) {
+            page.drawLine({
+              start: { x: x, y: rowBottom },
+              end: { x: x, y: rowBottom + height },
+              thickness: 0.6,
+              color: grid
+            });
+          }
+          var label = fit(cells[c].text, usedFont, size, cells[c].width - 12);
+          var textX = cells[c].align === "right"
+            ? x + cells[c].width - 8 - usedFont.widthOfTextAtSize(label, size)
+            : x + 6;
+          page.drawText(label, {
+            x: textX,
+            y: rowBottom + 6,
+            size: size,
+            font: usedFont,
+            color: textColor
+          });
+          x += cells[c].width;
+        }
+        y = rowBottom;
       }
 
-      function heading(value) {
+      function columns(noWidth) {
+        var amountWidth = 120;
+        return [
+          { width: noWidth, align: "left" },
+          { width: tableWidth - noWidth - amountWidth, align: "left" },
+          { width: amountWidth, align: "right" }
+        ];
+      }
+
+      function headerRow(labels, cols) {
+        var cells = [];
+        for (var i = 0; i < cols.length; i++) {
+          cells.push({ text: labels[i], width: cols[i].width, align: cols[i].align });
+        }
+        paintRow(cells, navy, white, bold, 10);
+      }
+
+      function dataRow(values, cols, fill, textColor, usedFont) {
+        var cells = [];
+        for (var i = 0; i < cols.length; i++) {
+          cells.push({ text: values[i], width: cols[i].width, align: cols[i].align });
+        }
+        paintRow(cells, fill || paper, textColor || ink, usedFont || font, 10);
+      }
+
+      function spanRow(value, fill, textColor, usedFont) {
+        paintRow([{ text: value, width: tableWidth, align: "left" }], fill, textColor, usedFont, 10);
+      }
+
+      function beginTable(labels, cols) {
+        repeatHeader = function () { headerRow(labels, cols); };
+        headerRow(labels, cols);
+      }
+
+      function titleBlock(title, subtitles) {
+        repeatHeader = null;
         newPage();
-        text(value, 50, 16);
+        center(title, 18, navy, bold);
         y -= 26;
+        for (var s = 0; s < subtitles.length; s++) {
+          if (!subtitles[s]) continue;
+          center(subtitles[s], 11, ink, font);
+          y -= 16;
+        }
+        y -= 8;
       }
 
-      heading("Dana masuk");
-      line(report.eventName || "", 50, 12);
-      line(report.eventDate || "", 50, 12);
-      y -= 6;
-      text("No.", 50, 11);
-      text("Nama", 90, 11);
-      text("Jumlah", 430, 11);
-      y -= 18;
+      var incomeCols = columns(42);
+      titleBlock("Money in", [report.eventName || "", report.eventDate || ""]);
+      beginTable(["No.", "Nama", "Jumlah"], incomeCols);
 
       var groups = report.income ? incomeGroups(report.income.rows) : [];
       for (var g = 0; g < groups.length; g++) {
-        var label = groups[g].rt ? "RT " + groups[g].rt : "Tanpa RT";
+        var label = groups[g].rt ? "RT " + groups[g].rt : "No RT";
         var subtotal = 0;
-        line(label, 50, 12);
+        if (y - 66 < bottom) newPage();
+        spanRow(label, group, white, bold);
         for (var r = 0; r < groups[g].rows.length; r++) {
           var donor = groups[g].rows[r];
           subtotal += donor.amount;
-          ensure(36);
-          text(String(r + 1), 50, 11);
-          text(donor.name, 90, 11);
-          text(formatRp(donor.amount), 430, 11);
-          y -= 16;
+          dataRow([String(r + 1), donor.name, formatRp(donor.amount)], incomeCols, r % 2 ? wash : paper);
         }
-        line("Subtotal  " + formatRp(subtotal), 90, 11);
-        y -= 6;
+        dataRow(["", "Subtotal", formatRp(subtotal)], incomeCols, wash);
       }
 
-      heading("Dana keluar");
+      var expenseCols = columns(42);
       var expenses = report.expense ? countedRows(report.expense.rows) : [];
       var expenseTotal = 0;
+      titleBlock("Money out", []);
+      beginTable(["No.", "Uraian", "Jumlah"], expenseCols);
       for (var e = 0; e < expenses.length; e++) {
         expenseTotal += expenses[e].amount;
-        ensure(36);
-        text(String(e + 1), 50, 11);
-        text(expenses[e].item, 90, 11);
-        text(formatRp(expenses[e].amount), 430, 11);
-        y -= 16;
+        dataRow([String(e + 1), expenses[e].item, formatRp(expenses[e].amount)], expenseCols, e % 2 ? wash : paper);
       }
-      line("Total  " + formatRp(expenseTotal), 90, 12);
+      dataRow(["", "Total", formatRp(expenseTotal)], expenseCols, navy, white, bold);
 
-      heading("Ringkasan");
+      var summaryCols = [
+        { width: tableWidth - 120, align: "left" },
+        { width: 120, align: "right" }
+      ];
+      titleBlock("Summary", [report.eventName || "", report.eventDate || ""]);
+      beginTable(["Keterangan", "Jumlah"], summaryCols);
       for (var s = 0; s < groups.length; s++) {
         var sum = 0;
         for (var n = 0; n < groups[s].rows.length; n++) sum += groups[s].rows[n].amount;
-        var rtLabel = groups[s].rt ? "RT " + groups[s].rt : "Tanpa RT";
-        ensure(36);
-        text(rtLabel, 50, 11);
-        text(formatRp(sum), 430, 11);
-        y -= 16;
+        var rtLabel = groups[s].rt ? "RT " + groups[s].rt : "No RT";
+        dataRow([rtLabel, formatRp(sum)], summaryCols, s % 2 ? wash : paper);
       }
-      y -= 6;
-      line("Saldo awal  " + formatRp(figures.saldoAwal), 50, 12);
-      if (openingRow) line(openingRow.raw, 50, 10);
-      y -= 6;
+      dataRow(["Opening balance", formatRp(figures.saldoAwal)], summaryCols, wash);
+      if (openingRow) spanRow(openingRow.raw, paper, ink, font);
       for (var x = 0; x < expenses.length; x++) {
-        ensure(36);
-        text(expenses[x].item, 50, 11);
-        text(formatRp(expenses[x].amount), 430, 11);
-        y -= 16;
+        dataRow([expenses[x].item, formatRp(expenses[x].amount)], summaryCols, paper);
       }
-      y -= 6;
-      line("Saldo akhir  " + formatRp(figures.saldoAkhir), 50, 12);
+      dataRow(["Closing balance", formatRp(figures.saldoAkhir)], summaryCols, navy, white, bold);
 
       if (report.signatures && report.signatures.length) {
-        y -= 12;
-        line("Tanda tangan", 50, 12);
+        repeatHeader = null;
+        y -= 28;
+        if (y < 80) newPage();
+        center("Signatures", 12, navy, bold);
+        y -= 20;
         for (var k = 0; k < report.signatures.length; k++) {
-          line(report.signatures[k].role + "  " + report.signatures[k].name, 50, 11);
+          if (y < bottom + 16) newPage();
+          var sign = report.signatures[k].role + "   " + report.signatures[k].name;
+          page.drawText(sign, { x: left, y: y, size: 11, font: font, color: ink });
+          y -= 18;
         }
       }
 
