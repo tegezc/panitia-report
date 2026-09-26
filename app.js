@@ -15,8 +15,10 @@ function rowCountLabel(label, count) {
   return label + " · " + count + " baris terbaca";
 }
 
-function gapLabel(label, difference) {
-  return "Selisih " + label + " " + formatRp(Math.abs(difference));
+function shortfall(label, written, computed) {
+  var diff = written - computed;
+  if (diff > 0) return label + " kurang " + formatRp(diff);
+  return "TOTAL tertulis " + label + " kurang " + formatRp(-diff);
 }
 
 function createReport(income, expense) {
@@ -50,10 +52,44 @@ function messageReady(message, computed) {
   return message.total.amount === computed;
 }
 
+function openingAlreadyCounted(income) {
+  if (!income) return false;
+  for (var i = 0; i < income.rows.length; i++) {
+    var row = income.rows[i];
+    if (row.saldoAwal && row.amount !== null && row.status !== "aside" && row.status !== "red") return true;
+  }
+  return false;
+}
+
+function incomeMatch(report, figures) {
+  var match = figures.incomeTotal;
+  if (!openingAlreadyCounted(report.income)) match += figures.saldoAwal;
+  return match;
+}
+
+function totalIssue(message, label, computed) {
+  if (!message) return "";
+  if (message.total.state === "unasked" || message.total.state === "empty" || message.total.amount === null) {
+    return label + " belum ada TOTAL.";
+  }
+  if (message.total.amount !== computed) return shortfall(label, message.total.amount, computed) + ".";
+  return "";
+}
+
+function blockNote(report, figures) {
+  var parts = [];
+  if (openRows(report.income) || openRows(report.expense)) parts.push("Masih ada baris yang perlu dicek.");
+  var incomeIssue = totalIssue(report.income, "Dana masuk", incomeMatch(report, figures));
+  var expenseIssue = totalIssue(report.expense, "Dana keluar", figures.totalPengeluaran);
+  if (incomeIssue) parts.push(incomeIssue);
+  if (expenseIssue) parts.push(expenseIssue);
+  return parts.join(" ");
+}
+
 function gateOpen(report) {
   var figures = figuresOf(report);
   if (openRows(report.income) || openRows(report.expense)) return false;
-  return messageReady(report.income, figures.incomeTotal) && messageReady(report.expense, figures.totalPengeluaran);
+  return messageReady(report.income, incomeMatch(report, figures)) && messageReady(report.expense, figures.totalPengeluaran);
 }
 
 function acceptAmount(row) {
@@ -467,26 +503,27 @@ function drawReport() {
   document.getElementById("total-pengeluaran").textContent = formatRp(figures.totalPengeluaran);
   document.getElementById("saldo-akhir").textContent = formatRp(figures.saldoAkhir);
 
+  var incomeCompared = incomeMatch(report, figures);
   var gaps = [];
-  if (report.income && (report.income.total.state === "written" || report.income.total.state === "accepted") && report.income.total.amount !== figures.incomeTotal) {
-    gaps.push(gapLabel("Dana masuk", report.income.total.amount - figures.incomeTotal));
-  }
-  if (report.expense && (report.expense.total.state === "written" || report.expense.total.state === "accepted") && report.expense.total.amount !== figures.totalPengeluaran) {
-    gaps.push(gapLabel("Dana keluar", report.expense.total.amount - figures.totalPengeluaran));
-  }
+  var incomeIssue = totalIssue(report.income, "Dana masuk", incomeCompared);
+  var expenseIssue = totalIssue(report.expense, "Dana keluar", figures.totalPengeluaran);
+  if (incomeIssue && report.income.total.amount !== null && report.income.total.amount !== incomeCompared) gaps.push(incomeIssue);
+  if (expenseIssue && report.expense.total.amount !== null && report.expense.total.amount !== figures.totalPengeluaran) gaps.push(expenseIssue);
   var gap = document.getElementById("gap");
   gap.hidden = gaps.length === 0;
-  gap.textContent = gaps.join(" · ");
+  gap.textContent = gaps.join(" ");
   renderSignatures(document.getElementById("signatures"), report);
-  renderMessage(document.getElementById("income-list"), "Dana masuk", report.income, figures.incomeTotal);
+  renderMessage(document.getElementById("income-list"), "Dana masuk", report.income, incomeCompared);
   renderMessage(document.getElementById("expense-list"), "Dana keluar", report.expense, figures.totalPengeluaran);
 
   var download = document.getElementById("download");
   var ready = gateOpen(report);
+  var note = document.getElementById("download-note");
   download.disabled = !ready;
   download.textContent = "Unduh PDF";
   download.className = ready ? "download ready" : "download";
-  document.getElementById("download-note").hidden = ready;
+  note.textContent = blockNote(report, figures);
+  note.hidden = ready || !note.textContent;
   saveReport();
 }
 
