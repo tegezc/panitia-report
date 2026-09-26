@@ -39,12 +39,15 @@
         <tr><th>Total pengeluaran</th><td id="total-pengeluaran"></td></tr>
         <tr><th>Saldo akhir</th><td id="saldo-akhir"></td></tr>
       </table>
-      <button id="new-report" type="button">Laporan baru</button>
+      <div class="report-actions">
+        <button id="download" class="download" type="button" disabled>Unduh PDF</button>
+        <button id="new-report" type="button">Laporan baru</button>
+      </div>
+      <p id="download-note">Masih ada baris yang perlu dicek.</p>
       <div id="signatures"></div>
       <div id="income-list"></div>
       <div id="expense-list"></div>
       <p id="pdf-error" class="note" hidden></p>
-      <button id="download" class="download" type="button" disabled>Masih ada baris yang perlu dicek.</button>
     </section>
   </main>
   <script src="vendor/pdf-lib.min.js"></script>

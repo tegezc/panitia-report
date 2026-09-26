@@ -74,6 +74,7 @@ Activity mode: not started
 ## Revisions
 
 - The income fixture and `spec.md > Components` now include `2. Warga B RT.02 : Rp 6.000.000` between the Rp 1.000.000 line and Kas sisa. The spec named the Rp 9.500.000 total without writing that clear donation line.
+- Unduh PDF sits with Laporan baru under the four-number table. The button is always labeled Unduh PDF. While the gate is closed it is disabled, and "Masih ada baris yang perlu dicek." is the line under it.
 - Laporan baru sits directly under the four-number table, above Dana masuk, so a long income list does not push it off the first screen.
 - Open detail is a bordered panel under the tile, not painted with the tile color. "Lihat pesan" opens directly under its button. Dana masuk and Dana keluar have different backgrounds, and totals are heavier than a donor tile.
 - The screen lists income by RT as closed tiles, and the PDF is Dana masuk, Dana keluar, and a ringkasan without donor names. Per-RT moved from Later into the POC boundary. `parse.js` stays. The kernel stays: the odd amount stays yellow until Benar, the multiplication check stays, Kas sisa stays Saldo awal, and Unduh PDF stays grey until every yellow or red line is settled.

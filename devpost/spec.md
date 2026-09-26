@@ -47,7 +47,7 @@ What to record, using `fixtures/excerpts.txt`:
 
 1. Paste **Dana masuk** and **Dana keluar** as written. Tap **Baca pesan**.
 2. Show the yellow `Rp.2000.0000` row proposing Rp 2.000.000, the yellow panitia multiplication (Hitung Rp 110.000, Tertulis Rp 100.000), "Kas sisa 2024" as Saldo awal, and the bank line set aside.
-3. Show the four numbers: Saldo awal Rp 500.000, Total donasi Rp 9.000.000, Total pengeluaran Rp 4.611.000, Saldo akhir Rp 4.889.000. The button says "Masih ada baris yang perlu dicek."
+3. Show the four numbers: Saldo awal Rp 500.000, Total donasi Rp 9.000.000, Total pengeluaran Rp 4.611.000, Saldo akhir Rp 4.889.000. The button stays labeled **Unduh PDF** and is disabled. Under it: "Masih ada baris yang perlu dicek."
 4. Tap **Benar** on the amount and **Pakai tertulis** on the multiplication. The button turns dark green and the PDF downloads.
 5. Reload the tab. The same report is still there.
 
@@ -57,7 +57,7 @@ The full private broadcasts stay out of the repo. These excerpts are the corpus.
 
 Carried from `prd.md > Look and Feel` and `scope.md > Inspiration & Identity`.
 
-Off-white page, near-black text, thin ruled lines. The device font. No custom font file, no gradient, no illustration. A clear tile has no fill. A yellow tile is pale amber. A red tile is pale red. A set-aside tile is grey. That color stays on the one-line tile. The open detail is a separate panel under the tile, with its own background, a border, and padding. Dana masuk and Dana keluar use different block backgrounds. "TOTAL tertulis", each RT subtotal, and the expense total are heavier than a donor tile. The four numbers sit in one bordered table, large enough to read in sunlight. **Unduh PDF** is solid dark green when it works, and the same button greyed out while it shows "Masih ada baris yang perlu dicek."
+Off-white page, near-black text, thin ruled lines. The device font. No custom font file, no gradient, no illustration. A clear tile has no fill. A yellow tile is pale amber. A red tile is pale red. A set-aside tile is grey. That color stays on the one-line tile. The open detail is a separate panel under the tile, with its own background, a border, and padding. Dana masuk and Dana keluar use different block backgrounds. "TOTAL tertulis", each RT subtotal, and the expense total are heavier than a donor tile. The four numbers sit in one bordered table, large enough to read in sunlight. **Unduh PDF** stays labeled **Unduh PDF**. It is solid dark green when it works, and greyed out and disabled while the line under it says "Masih ada baris yang perlu dicek." It sits with **Laporan baru** directly under the four numbers.
 
 The PDF is black text on white, in three parts: Dana masuk by RT, Dana keluar, then the ringkasan. It is not a one-page list titled Panitia Report. CSS does the screen. pdf-lib draws the file. The stack can honor this direction without a design system.
 
@@ -134,7 +134,7 @@ For the excerpts, after the proposed Rp 2.000.000 is in the sum and the panitia 
 
 A rupiah gap stays pinned at the top: which message, and the difference. The exact Indonesian is open. A difference of zero is not enough to download while a yellow or red row is still open.
 
-**Unduh PDF** works only when every pasted message matches its total, every yellow line is settled, and every red line has an amount or is **Bukan transaksi**. "Tidak ditempel" is not a pasted message. Set-aside rows do not keep the button grey. While blocked, the button says "Masih ada baris yang perlu dicek." When it works, it is dark green and the file downloads.
+**Unduh PDF** works only when every pasted message matches its total, every yellow line is settled, and every red line has an amount or is **Bukan transaksi**. "Tidak ditempel" is not a pasted message. Set-aside rows do not keep the button grey. While blocked, the button stays labeled **Unduh PDF** and disabled, and the line under it says "Masih ada baris yang perlu dicek." When it works, it is dark green and the file downloads.
 
 There is only one Saldo awal. She cannot type a Saldo awal larger than the income total.
 

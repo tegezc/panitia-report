@@ -484,8 +484,9 @@ function drawReport() {
   var download = document.getElementById("download");
   var ready = gateOpen(report);
   download.disabled = !ready;
-  download.textContent = ready ? "Unduh PDF" : "Masih ada baris yang perlu dicek.";
+  download.textContent = "Unduh PDF";
   download.className = ready ? "download ready" : "download";
+  document.getElementById("download-note").hidden = ready;
   saveReport();
 }
 

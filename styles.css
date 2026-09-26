@@ -49,17 +49,27 @@ button {
   padding: 0.45rem 0.7rem;
 }
 
-#new-report {
-  display: block;
-  margin: 0.2rem 0 0.8rem;
+.report-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin: 0.35rem 0 0.25rem;
+}
+
+#new-report,
+button.download {
+  display: inline-block;
+  margin: 0;
 }
 
 button.download {
-  display: block;
-  margin-top: 1rem;
   background: #c8c8c8;
   color: #4a4a4a;
   border-color: #9a9a9a;
+}
+
+#download-note {
+  margin: 0.25rem 0 0.8rem;
 }
 
 button.download.ready {

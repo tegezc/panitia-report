@@ -15,7 +15,7 @@ Source: `scope.md > The Unique Kernel`, `scope.md > The Core Loop`, `scope.md > 
 2. She pastes each broadcast as she already sent it and taps **Baca pesan**. The title stays. The boxes collapse into two lines she can reopen, "Dana masuk" and "Dana keluar", each showing how many lines were read. Event name and date come from the income header and are editable. The page shows Saldo awal, Total donasi, Total pengeluaran, and Saldo akhir.
 3. Income is grouped by RT. Each group shows its name and subtotal. Each donor is one closed tile, a single line with the name and the amount, and a closed tile has no buttons. She taps one tile and its detail opens directly under that tile only: the original WhatsApp line, the reading, and the fix actions for that row. Other tiles stay closed. Tapping another tile closes the previous detail. Expenses use the same closed-tile pattern. A clear line needs nothing. A yellow line is a guess still in the sum, and she accepts it or replaces it. A red line is missing from the sum until she types an amount or marks it not a transaction. A header, footer, divider, or bank-account line is set aside, still visible as a closed tile, and she can pull it back from its detail. Kas sisa is Saldo awal and is not a donor tile.
 4. At the top of each message's list is the total used for the match. If she wrote one, it reads "TOTAL tertulis: Rp X" and she taps **Ubah** to change the number. That total line is not also a row she can count. The paste does not change. If a message has no total line, the page asks once whether the computed total is right. If a pasted message does not match, the difference stays pinned: which message, and the difference in rupiah.
-5. **Unduh PDF** stays on the page and does nothing useful until every pasted message matches its total, every yellow line is settled, and every red line has an amount or is marked **Bukan transaksi**. Set-aside lines do not block it. While it is blocked it says "Masih ada baris yang perlu dicek."
+5. **Unduh PDF** stays on the page and does nothing useful until every pasted message matches its total, every yellow line is settled, and every red line has an amount or is marked **Bukan transaksi**. Set-aside lines do not block it. While it is blocked the button stays labeled **Unduh PDF**, disabled, and the line under it says "Masih ada baris yang perlu dicek."
 6. She can skip signatures. If she adds any, they are a role and a name, up to three. The PDF is the laporan the committee keeps, in three parts. Dana masuk has the event name and date, columns No., Nama, and Jumlah, numbering that restarts in each RT, and a subtotal after each group. Dana keluar is a numbered list of item and amount, then the total. The ringkasan is one line per RT subtotal, then Saldo awal with the Kas sisa wording when it came from a line, then the expenses, then Saldo akhir. Donor names do not appear on the ringkasan. Kas sisa is not repeated as a donation. The signature block is last, and only if she added one.
 7. If she leaves and comes back on the same phone, that report is still there. **Laporan baru**, after she confirms, clears the page back to the two empty boxes. Another phone does not have the report.
 
@@ -41,7 +41,7 @@ A clear tile has no fill. A yellow tile is pale amber. A red tile is pale red. A
 
 Dana masuk has one background. Dana keluar has a different background. "TOTAL tertulis", each RT subtotal, and the expense total are heavier than a donor tile, so a total is not read as another name. The four numbers stay in a plain bordered table, large enough to read in sunlight.
 
-**Unduh PDF** is a solid dark-green button when it works, and the same button greyed out while it shows "Masih ada baris yang perlu dicek."
+**Unduh PDF** stays labeled **Unduh PDF**. It is solid dark green when it works, and the same button greyed out and disabled while the line under it says "Masih ada baris yang perlu dicek." It sits with **Laporan baru** directly under the four numbers.
 
 The PDF is black text on white, in three parts: Dana masuk by RT, Dana keluar, then the ringkasan. It is not a one-page list titled Panitia Report.
 
@@ -118,7 +118,7 @@ There is only one Saldo awal. She cannot type a Saldo awal larger than the incom
 
 - [ ] The four labels read Saldo awal, Total donasi, Total pengeluaran, and Saldo akhir, on the phone and on PDF page one.
 - [ ] With a rupiah gap, the pinned line names the message and the difference, and **Unduh PDF** does not download.
-- [ ] With a difference of zero and one yellow or red row still open, **Unduh PDF** stays grey and says "Masih ada baris yang perlu dicek."
+- [ ] With a difference of zero and one yellow or red row still open, **Unduh PDF** stays grey and disabled, still labeled **Unduh PDF**, and the line under it says "Masih ada baris yang perlu dicek."
 - [ ] After every yellow row is settled and every red row has an amount or is **Bukan transaksi**, and every pasted message matches its total, the button is dark green and the PDF downloads.
 - [ ] Set-aside rows do not keep the button grey.
 - [ ] Saldo akhir changes when Saldo awal, the donations, or the expenses change, and it is not a number she pasted.
