@@ -73,6 +73,7 @@ Activity mode: not started
 
 ## Revisions
 
+- While a yellow or red row is still open, the line under Unduh PDF names that row. On the excerpt, that row is Bpk H. Warga F until Benar. A hidden Kas sisa row does not keep the button grey. The yellow tile is darker than the Dana masuk background so it can be seen.
 - Kas sisa counts in the Dana masuk total compared with TOTAL tertulis, so a written Rp 9.500.000 matches and the Rp 500.000 gap goes away. A total mismatch names which total is short and by how much. "Masih ada baris yang perlu dicek." is only for a yellow or red row. The tiles and the PDF stay as they were.
 - The income fixture and `spec.md > Components` now include `2. Warga B RT.02 : Rp 6.000.000` between the Rp 1.000.000 line and Kas sisa. The spec named the Rp 9.500.000 total without writing that clear donation line.
 - Unduh PDF sits with Laporan baru under the four-number table. The button is always labeled Unduh PDF. While the gate is closed it is disabled, and "Masih ada baris yang perlu dicek." is the line under it.

@@ -36,13 +36,30 @@ function figuresOf(report) {
   return reportFigures(report.income, report.expense, report.typedSaldoAwal);
 }
 
+function rowNeedsCheck(row) {
+  if (!row || row.saldoAwal) return false;
+  return row.status === "yellow-amount" || row.status === "yellow-multiply" || row.status === "red";
+}
+
 function openRows(message) {
   if (!message) return false;
   for (var i = 0; i < message.rows.length; i++) {
-    var status = message.rows[i].status;
-    if (status === "yellow-amount" || status === "yellow-multiply" || status === "red") return true;
+    if (rowNeedsCheck(message.rows[i])) return true;
   }
   return false;
+}
+
+function uncheckedLabels(report) {
+  var labels = [];
+  function collect(message, kind) {
+    if (!message) return;
+    for (var i = 0; i < message.rows.length; i++) {
+      if (rowNeedsCheck(message.rows[i])) labels.push(tileTitle(message.rows[i], kind).replace(/\s+/g, " ").trim());
+    }
+  }
+  collect(report.income, "income");
+  collect(report.expense, "expense");
+  return labels;
 }
 
 function messageReady(message, computed) {
@@ -78,7 +95,8 @@ function totalIssue(message, label, computed) {
 
 function blockNote(report, figures) {
   var parts = [];
-  if (openRows(report.income) || openRows(report.expense)) parts.push("Masih ada baris yang perlu dicek.");
+  var unchecked = uncheckedLabels(report);
+  if (unchecked.length) parts.push("Masih ada baris yang perlu dicek: " + unchecked.join(", ") + ".");
   var incomeIssue = totalIssue(report.income, "Dana masuk", incomeMatch(report, figures));
   var expenseIssue = totalIssue(report.expense, "Dana keluar", figures.totalPengeluaran);
   if (incomeIssue) parts.push(incomeIssue);
